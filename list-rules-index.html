@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ספר ויקרא • פרק י"ט - קיר חוקים חברתיים</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #1e293b 60%, #0f172a 100%);
+            color: #f8fafc;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        .biblical-font {
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+        .law-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(30, 41, 59, 0.75);
+            border: 1.5px solid rgba(245, 158, 11, 0.35);
+        }
+        .law-card:hover {
+            border-color: rgba(245, 158, 11, 0.8);
+            background: rgba(49, 46, 129, 0.85);
+            transform: translateY(-2px);
+        }
+        .law-card.active {
+            border-color: #f59e0b !important;
+            background: rgba(245, 158, 11, 0.22) !important;
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.45), inset 0 0 15px rgba(245, 158, 11, 0.2);
+            transform: scale(1.02);
+        }
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex items-center justify-center p-4">
+
+    <!-- Main Board Centered to 85% Height & Width for Touch Accessibility -->
+    <div class="w-[90%] h-[85%] flex flex-col justify-between my-auto relative">
+
+        <!-- Header Wall Title -->
+        <header class="flex justify-between items-center bg-indigo-950/80 border border-amber-500/40 rounded-2xl px-6 py-3 backdrop-blur-md shadow-2xl shrink-0">
+            <!-- Right side: Title & Icon -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-amber-500/20 border-2 border-amber-400 text-amber-300 rounded-xl flex items-center justify-center text-2xl shadow-inner">
+                    <i class="fa-solid fa-scroll"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-black text-amber-300 tracking-wide">ספר ויקרא • פרק י"ט</h1>
+                    <p class="text-indigo-200 text-xs md:text-sm font-semibold">קיר החוקים החברתיים • מגע בכל חוק יבליט את משמעותו</p>
+                </div>
+            </div>
+
+            <!-- Left side: Task & Solution Buttons + Category Filters -->
+            <div class="flex items-center gap-2">
+                <!-- Task Prompt Button -->
+                <button onclick="toggleModal('taskModal')" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/50 font-extrabold px-3 py-2 rounded-xl text-xs md:text-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-compass text-amber-400"></i> משימה
+                </button>
+
+                <!-- Solution 1 Button -->
+                <button onclick="toggleModal('hint1Modal')" class="bg-indigo-900/80 hover:bg-indigo-800 text-amber-300 border border-amber-400/40 font-bold px-3 py-2 rounded-xl text-xs md:text-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-amber-400"></i> תשובה 1
+                </button>
+
+                <!-- Solution 2 Button -->
+                <button onclick="toggleModal('hint2Modal')" class="bg-indigo-900/80 hover:bg-indigo-800 text-amber-300 border border-amber-400/40 font-bold px-3 py-2 rounded-xl text-xs md:text-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-amber-400"></i> תשובה 2
+                </button>
+
+                <!-- Divider -->
+                <div class="h-6 w-[1px] bg-indigo-700/60 mx-1"></div>
+
+                <!-- Filters -->
+                <button onclick="filterCategory('social')" id="btn-social" class="filter-btn bg-indigo-900/60 hover:bg-indigo-800 text-amber-200 font-bold px-3.5 py-2 rounded-xl text-xs md:text-sm border border-indigo-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-handshake text-amber-400"></i> בין אדם לחברו
+                </button>
+                <button onclick="filterCategory('protection')" id="btn-protection" class="filter-btn bg-indigo-900/60 hover:bg-indigo-800 text-amber-200 font-bold px-3.5 py-2 rounded-xl text-xs md:text-sm border border-indigo-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-hands-holding-child text-amber-400"></i> הגנת החלש
+                </button>
+                <button onclick="filterCategory('truth')" id="btn-truth" class="filter-btn bg-indigo-900/60 hover:bg-indigo-800 text-amber-200 font-bold px-3.5 py-2 rounded-xl text-xs md:text-sm border border-indigo-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-scale-balanced text-amber-400"></i> אמת ויושר
+                </button>
+                <button onclick="filterCategory('all')" id="btn-all" class="filter-btn bg-amber-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs md:text-sm transition shadow-lg glow-gold">
+                    הכל (12)
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Wall Display Grid -->
+        <main class="flex-1 grid grid-cols-4 gap-3 my-3 overflow-hidden" id="lawsGrid">
+            <!-- Dynamic Cards Inserted Here via JS -->
+        </main>
+
+        <!-- Bottom Interactive Detail Bar -->
+        <footer id="detailBar" class="h-22 bg-indigo-950/95 border-2 border-amber-500/50 rounded-2xl px-6 py-2.5 flex items-center justify-between backdrop-blur-xl shadow-2xl shrink-0 transition-all">
+            <div class="flex items-center gap-4 overflow-hidden">
+                <div id="detailVerseBadge" class="w-12 h-12 bg-amber-500 text-slate-950 font-black text-2xl rounded-xl flex items-center justify-center shrink-0 shadow-lg glow-gold">
+                    🔍
+                </div>
+                <div class="overflow-hidden">
+                    <h3 id="detailTitle" class="text-base md:text-lg font-black text-amber-300 truncate">משימת חקירה בקיר:</h3>
+                    <p id="detailDesc" class="text-slate-100 text-xs md:text-sm font-medium mt-0.5">גלו את 3 קבוצות החוקים השונות. מה ההבדל בין קבוצה לקבוצה? ולמה לדעתכם התורה חילקה את החוקים דווקא כך?</p>
+                </div>
+            </div>
+            <div id="detailTag" class="hidden bg-amber-500/20 border border-amber-400/50 px-4 py-2 rounded-xl text-amber-300 text-xs md:text-sm font-bold flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-star text-amber-400"></i>
+                <span id="detailTagText"></span>
+            </div>
+        </footer>
+
+        <!-- Task Guidance Popup Modal -->
+        <div id="taskModal" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-md rounded-2xl flex items-center justify-center p-6 z-50">
+            <div class="bg-indigo-950 border-2 border-amber-400/80 rounded-3xl p-8 max-w-xl w-full text-center shadow-2xl relative glow-gold">
+                <button onclick="toggleModal('taskModal')" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="w-16 h-16 bg-amber-500/20 text-amber-300 border border-amber-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
+                    <i class="fa-solid fa-magnifying-glass font-bold"></i>
+                </div>
+                <h2 class="text-2xl font-black text-amber-300 mb-3">🔍 משימת חקירה לתלמידים</h2>
+                <div class="text-slate-200 text-base leading-relaxed space-y-3 font-semibold mb-6 text-right bg-indigo-900/50 p-4 rounded-2xl border border-indigo-700/50">
+                    <p>1. **גלו את 3 קבוצות החוקים השונות** (השתמשו בכפתורי הסינון בחלק העליון).</p>
+                    <p>2. **חשבו ודנו ביניכם:** מה ההבדל בין קבוצה לקבוצה?</p>
+                    <p>3. **למה לדעתכם התורה חילקה את החוקים דווקא כך?**</p>
+                </div>
+                <button onclick="toggleModal('taskModal')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-8 py-3 rounded-xl text-base transition shadow-lg">
+                    הבנתי, בואו נחקור!
+                </button>
+            </div>
+        </div>
+
+        <!-- Solution 1 Popup Modal -->
+        <div id="hint1Modal" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-md rounded-2xl flex items-center justify-center p-6 z-50">
+            <div class="bg-indigo-950 border-2 border-amber-400/80 rounded-3xl p-8 max-w-2xl w-full text-center shadow-2xl relative glow-gold">
+                <button onclick="toggleModal('hint1Modal')" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="w-16 h-16 bg-amber-500/20 text-amber-300 border border-amber-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
+                    <i class="fa-solid fa-circle-check font-bold"></i>
+                </div>
+                <h2 class="text-2xl font-black text-amber-300 mb-2">✔️ תשובה 1: מה ההבדל בין קבוצה לקבוצה?</h2>
+                <div class="text-slate-200 text-sm md:text-base leading-relaxed space-y-3 font-medium mb-6 text-right bg-indigo-900/50 p-5 rounded-2xl border border-indigo-700/50 max-h-[50vh] overflow-y-auto">
+                    <p><strong class="text-amber-300">בין אדם לחברו:</strong> חוקים העוסקים ביחסים הישירים והיומיומיים בין אנשים שווים בחברה (איסור שנאה, איסור נקמה, חובת אהבת הזולת, איסור רכילות, תשלום שכר בזמן).</p>
+                    <p><strong class="text-amber-300">הגנת החלש:</strong> חוקים הממוקדים בהגנה על אוכלוסיות פגיעות ומוחלשות בחברה, שאינן יכולות להגן על עצמן בעצמן (עיוור, חרש, זקנים, גרים וזרים).</p>
+                    <p><strong class="text-amber-300">אמת ויושר:</strong> חוקים העוסקים בטוהר המידות, אמינות והגינות במערכות המשפט והמסחר (איסור גנבה, איסור שקר ושבועת שקר, משפט צדק ללא אפליה, משקלות ומידות אמת).</p>
+                </div>
+                <button onclick="toggleModal('hint1Modal')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-8 py-2.5 rounded-xl text-base transition shadow-lg">
+                    סגור תשובה
+                </button>
+            </div>
+        </div>
+
+        <!-- Solution 2 Popup Modal -->
+        <div id="hint2Modal" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-md rounded-2xl flex items-center justify-center p-6 z-50">
+            <div class="bg-indigo-950 border-2 border-amber-400/80 rounded-3xl p-8 max-w-2xl w-full text-center shadow-2xl relative glow-gold">
+                <button onclick="toggleModal('hint2Modal')" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="w-16 h-16 bg-amber-500/20 text-amber-300 border border-amber-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
+                    <i class="fa-solid fa-circle-check font-bold"></i>
+                </div>
+                <h2 class="text-2xl font-black text-amber-300 mb-2">✔️ תשובה 2: למה התורה חילקה את החוקים כך?</h2>
+                <div class="text-slate-200 text-sm md:text-base leading-relaxed space-y-3 font-medium mb-6 text-right bg-indigo-900/50 p-5 rounded-2xl border border-indigo-700/50 max-h-[50vh] overflow-y-auto">
+                    <p class="text-amber-200 font-bold">החלוקה הזו בונה חברה צודקת ומתוקנת מכל הזוויות:</p>
+                    <p><strong>1. כיסוי כל מעגלי החיים:</strong> כדי שחברה תהיה מוסרית, לא מספיק רק שלא נגנוב (אמת ויושר), אלא צריך גם שלא נשנא בלב (בין אדם לחברו) ושנשמור במיוחד על מי שפגיע (הגנת החלש).</p>
+                    <p><strong>2. מניעת ניצול כוח:</strong> התורה מדגישה קבוצה נפרדת ל"הגנת החלש" מפני שבדרך כלל בחברה, החזק נוטה לנצל את החלש. התורה מעמידה סייג מפורש להגנתם.</p>
+                    <p><strong>3. חיבור בין המצפון האישי לכללים החברתיים:</strong> החוקים נעים בין חובות הלב והרגש (אהבה, שנאה, טינה) לבין מעשים מעשיים בשטח (מסחר, משפט, מתן עזרה).</p>
+                </div>
+                <button onclick="toggleModal('hint2Modal')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-8 py-2.5 rounded-xl text-base transition shadow-lg">
+                    סגור תשובה
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const lawsData = [
+            {
+                verse: "יא",
+                category: "truth",
+                categoryName: "אמת ויושר",
+                text: "לֹא תִּגְנֹבוּ; וְלֹא-תְכַחֲשׁוּ וְלֹא-תְשַׁקְרוּ, אִישׁ בַּעֲמִיתוֹ.",
+                meaning: "אומרים רק אמת! אסור לקחת ציוד או דברים ששייכים למישהו אחר, ואסור לשקר לחברים."
+            },
+            {
+                verse: "יב",
+                category: "truth",
+                categoryName: "אמת ויושר",
+                text: "וְלֹא-תִשָּׁבְעוּ בִשְׁמִי לַשָּׁקֶר: וְחִלַּלְתָּ אֶת-שֵׁם אֱלֹהֶיךָ, אֲנִי ה'.",
+                meaning: "שומרים על כבוד השם! אסור להישבע סתם או להישבע על משהו שאינו נכון."
+            },
+            {
+                verse: "יג",
+                category: "social",
+                categoryName: "בין אדם לחברו",
+                text: "לֹא-תַעֲשֹׁק אֶת-רֵעֲךָ וְלֹא תִגְזֹל; לֹא-תָלִין פְּעֻלַּת שָׂכִיר, אִתְּךָ עַד-בֹּקֶר.",
+                meaning: "משלמים בזמן! אם מישהו עבד בשבילנו או עזר לנו, משלמים לו מיד ולא מעכבים את מה שמגיע לו."
+            },
+            {
+                verse: "יד",
+                category: "protection",
+                categoryName: "הגנת החלש",
+                text: "לֹא-תְקַלֵּל חֵרֵשׁ--וְלִפְנֵי עִוֵּר, לֹא תִתֵּן מִכְשׁוֹל; וְיָרֵאתָ מֵאֱלֹהֶיךָ, אֲנִי ה'.",
+                meaning: "מגינים על מי שצריך עזרה! אסור לצחוק על מי שלא שומע, ואסור להכשיל או לעבוד על מי שלא רואה."
+            },
+            {
+                verse: "טו",
+                category: "truth",
+                categoryName: "אמת ויושר",
+                text: "לֹא-תַעֲשׂוּ עָוֶל בַּמִּשְׁפָּט--לֹא-תִשָּׂא פְנֵי-דָל, וְלֹא תֶהְדַּר פְּנֵי גָדוֹל: בְּצֶדֶק, תִּשְׁפֹּט עַמִּיתֶךָ.",
+                meaning: "נוהגים בשוויון! שופטים כל אדם בצדק, בלי לוותר לחזק ובלי להפלות לרעה את החלש."
+            },
+            {
+                verse: "טז",
+                category: "social",
+                categoryName: "בין אדם לחברו",
+                text: "לֹא-תֵלֵךְ רָכִיל בְּעַמֶּיךָ, לֹא תַעֲמֹד עַל-דַּם רֵעֶךָ: אֲנִי ה'.",
+                meaning: "שומרים על סודות ועוזרים לחברים! אסור לרכל על אחרים, ואם רואים חבר בצרה - עוזרים לו מיד."
+            },
+            {
+                verse: "יז",
+                category: "social",
+                categoryName: "בין אדם לחברו",
+                text: "לֹא-תִשְׂנָא אֶת-אַחִיךָ, בִּלְבָבֶךָ; הוֹכֵחַ תּוֹכִיחַ אֶת-עֲמִיתֶךָ, וְלֹא-תִשָּׂא עָלָיו חֵטְא.",
+                meaning: "מדברים פתוח ובלי שנאה! אם חבר פגע בך, מציפים את זה בנעימות ומדברים ולא שומרים שנאה בלב."
+            },
+            {
+                verse: "יח",
+                category: "social",
+                categoryName: "בין אדם לחברו",
+                text: "לֹא-תִקֹּם וְלֹא-תִטֹּר אֶת-בְּנֵי עַמֶּךָ, וְאָהַבְתָּ לְרֵעֲךָ כָּמוֹךָ: אֲנִי ה'.",
+                meaning: "הכלל הכי חשוב בתורה! לא נוקמים ולא נוטרים טינה, ואוהבים את החברים בדיוק כמו שאוהבים את עצמנו."
+            },
+            {
+                verse: "לב",
+                category: "protection",
+                categoryName: "הגנת החלש",
+                text: "מִפְּנֵי שֵׂיבָה תָּקוּם, וְהָדַרְתָּ פְּנֵי זָקֵן; וְיָרֵאתָ מֵאֱלֹהֶיךָ, אֲנִי ה'.",
+                meaning: "מכבדים מבוגרים! קמים ומפנים מקום לאנשים מבוגרים וסבים וסבתות."
+            },
+            {
+                verse: "לג",
+                category: "protection",
+                categoryName: "הגנת החלש",
+                text: "וְכִי-יָגוּר אִתְּךָ גֵּר, בְּאַרְצְכֶם--לֹא תוֹנוּ אֹתוֹ.",
+                meaning: "מקבלים את האחר! אסור לפגוע או להציק לאנשים חדשים או זרים שהגיעו לגור איתנו."
+            },
+            {
+                verse: "לד",
+                category: "protection",
+                categoryName: "הגנת החלש",
+                text: "כְּאֶזְרָח מִכֶּם יִהְיֶה לָכֶם הַגֵּר הַגָּר אִתְּכֶם, וְאָהַבְתָּ לוֹ כָּמוֹךָ--כִּי-גֵרִים הֱיִיתֶם, בְּאֶרֶץ מִצְרָיִם: אֲנִי, ה' אֱלֹהֵיכֶם.",
+                meaning: "זוכרים מאיפה באנו! מתנהגים אל הזר באהבה ובשיוויון כי גם עם ישראל היו זרים במצרים."
+            },
+            {
+                verse: "לה",
+                category: "truth",
+                categoryName: "אמת ויושר",
+                text: "לֹא-תַעֲשׂוּ עָוֶל, בַּמִּשְׁפָּט, בַּמִּדָּה, בַּמִּשְׁקָל וּבַמְּשׂוּרָה.",
+                meaning: "משחקים וסוחרים בהגינות! כשמודדים או שוקלים דברים בחנות או במשחק, לא מרמים."
+            }
+        ];
+
+        let activeVerse = null;
+        let currentFilter = 'all';
+
+        function renderWall(filter = 'all') {
+            const grid = document.getElementById('lawsGrid');
+            grid.innerHTML = '';
+
+            const filteredLaws = lawsData.filter(law => filter === 'all' || law.category === filter);
+
+            if (filter !== 'all') {
+                grid.className = "flex-1 grid grid-cols-2 gap-4 my-3 overflow-hidden";
+            } else {
+                grid.className = "flex-1 grid grid-cols-4 gap-3 my-3 overflow-hidden";
+            }
+
+            filteredLaws.forEach(law => {
+                const isSelected = activeVerse === law.verse;
+
+                const card = document.createElement('div');
+                card.className = `law-card cursor-pointer ${filter !== 'all' ? 'p-5' : 'p-3.5'} rounded-2xl flex flex-col justify-between backdrop-blur-md ${
+                    isSelected ? 'active' : ''
+                }`;
+
+                card.onclick = () => selectLaw(law);
+
+                const fontSizeClass = filter !== 'all' ? 'text-lg md:text-xl leading-relaxed' : 'text-sm md:text-base leading-snug';
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 font-black text-xs flex items-center justify-center">
+                            ${law.verse}
+                        </span>
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-950/80 text-amber-200 border border-indigo-700/60">
+                            ${law.categoryName}
+                        </span>
+                    </div>
+                    <p class="biblical-font text-slate-100 ${fontSizeClass} font-semibold my-auto">
+                        ${law.text}
+                    </p>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function selectLaw(law) {
+            activeVerse = law.verse;
+            renderWall(currentFilter);
+
+            document.getElementById('detailVerseBadge').innerText = law.verse;
+            document.getElementById('detailTitle').innerText = law.text;
+            document.getElementById('detailDesc').innerText = law.meaning;
+            
+            const tag = document.getElementById('detailTag');
+            document.getElementById('detailTagText').innerText = law.categoryName;
+            tag.classList.remove('hidden');
+        }
+
+        function filterCategory(cat) {
+            currentFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn bg-indigo-900/60 hover:bg-indigo-800 text-amber-200 font-bold px-3.5 py-2 rounded-xl text-xs md:text-sm border border-indigo-700 transition flex items-center gap-1.5";
+            });
+
+            const activeBtn = document.getElementById(`btn-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = "filter-btn bg-amber-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs md:text-sm transition shadow-lg glow-gold flex items-center gap-1.5";
+            }
+
+            renderWall(cat);
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        window.onload = () => {
+            renderWall();
+        };
+    </script>
+</body>
+</html>
+```eof
