@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חוקי התנ"ך - קיר 3 - גלגל הערכים והמנעול</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            user-select: none;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* עיצוב רקע ייחודי לקיר 3 - זהב וטורקיז אימרסיבי */
+        .bg-wall3 {
+            background-color: #03131a;
+            background-image: 
+                radial-gradient(circle at 50% 40%, rgba(20, 184, 166, 0.2) 0%, transparent 70%),
+                radial-gradient(#155e75 2px, transparent 2px);
+            background-size: 100% 100%, 36px 36px;
+        }
+
+        /* גלגל הערכים */
+        .wheel-container {
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+            touch-action: none;
+        }
+
+        .gold-border-glow {
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.35);
+        }
+
+        /* חלקיקי קונפטי */
+        .confetti-piece {
+            position: absolute;
+            width: 14px;
+            height: 24px;
+            top: -30px;
+            opacity: 0.9;
+            animation: fall 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-wall3 h-screen w-screen m-0 p-0 overflow-hidden flex items-center justify-center relative text-white">
+
+    <!-- Outer 16:9 Container Centered -->
+    <div class="relative w-full max-w-[177.78vh] h-full max-h-[56.25vw] flex flex-col justify-between p-4 md:p-6 box-border my-auto mx-auto overflow-hidden">
+
+        <!-- Simplified Header: Instruction & Restart Button on Same Line -->
+        <header class="flex justify-between items-center border-b-2 border-teal-800/60 pb-3 z-30">
+            <h1 class="text-xl md:text-3xl font-black text-amber-300 tracking-wide flex items-center gap-2">
+                <span>🔐</span>
+                <span>סובבו את הגלגל ופתחו את המנעול!</span>
+            </h1>
+
+            <button onclick="restartGame()" class="bg-slate-900/90 hover:bg-slate-800 border border-teal-500/50 text-teal-200 text-base md:text-lg font-bold px-4 py-2 rounded-xl shadow-md transition active:scale-95 flex items-center gap-2 cursor-pointer">
+                <span>🔄</span>
+                <span>התחל מחדש</span>
+            </button>
+        </header>
+
+        <!-- Main Display (Lock & Wheel System) -->
+        <main class="flex-1 flex flex-col md:flex-row items-center justify-around gap-6 my-auto max-w-6xl mx-auto w-full z-20 px-4">
+            
+            <!-- Left Side: Torah Law Card & Lock Box -->
+            <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md">
+                <!-- Law Scroll Box -->
+                <div class="w-full bg-slate-900/90 border-3 border-amber-500/70 rounded-2xl p-6 shadow-2xl backdrop-blur-md gold-border-glow text-center mb-6">
+                    <span class="text-amber-400 font-bold text-sm tracking-widest block mb-2">🏫 מקרה מהחיים בכיתה</span>
+                    <h2 id="law-title" class="text-xl md:text-2xl font-black text-amber-100 leading-relaxed tracking-wide">
+                        --
+                    </h2>
+                </div>
+
+                <!-- Lock Status Display -->
+                <div id="lock-container" class="bg-slate-950/90 border-2 border-teal-600/60 rounded-2xl p-4 w-full flex items-center justify-center gap-4 shadow-xl">
+                    <div id="lock-icon" class="text-5xl transition-transform duration-300">🔒</div>
+                    <div>
+                        <div class="text-xs text-teal-300 font-semibold">סטטוס המנעול:</div>
+                        <div id="lock-status-text" class="text-lg font-black text-rose-400">נעול - בחרו חוק בגלגל</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Interactive Spinning Wheel -->
+            <div class="flex-1 flex flex-col items-center justify-center relative w-full max-w-md">
+                
+                <!-- Target Selector Pointer (Arrow) -->
+                <div class="z-30 mb-[-20px] text-amber-400 text-4xl drop-shadow-lg animate-bounce">
+                    ▼
+                </div>
+
+                <!-- Wheel Frame -->
+                <div class="relative w-72 h-72 md:w-80 md:h-80 rounded-full border-4 border-amber-400 shadow-2xl bg-slate-900/90 flex items-center justify-center overflow-hidden">
+                    
+                    <!-- Rotatable Wheel Element -->
+                    <div id="wheel" class="wheel-container absolute inset-0 rounded-full flex items-center justify-center">
+                        <!-- Segments dynamically rendered -->
+                    </div>
+
+                    <!-- Central Wheel Hub -->
+                    <div class="absolute w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-4 border-slate-950 shadow-2xl flex items-center justify-center text-slate-950 font-black text-2xl z-20">
+                        ⭐
+                    </div>
+                </div>
+
+                <!-- Manual Wheel Controls -->
+                <div class="flex gap-4 mt-6 z-30">
+                    <button onclick="rotateWheel(-1)" class="bg-teal-700 hover:bg-teal-600 border border-teal-400 text-white font-black px-5 py-2 rounded-xl shadow-lg active:scale-95 text-lg cursor-pointer">
+                        ↩️ סובב ימינה
+                    </button>
+                    <button onclick="checkSelection()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-6 py-2 rounded-xl shadow-lg active:scale-95 text-lg border border-amber-200 cursor-pointer">
+                        🔑 בדוק מפתח
+                    </button>
+                    <button onclick="rotateWheel(1)" class="bg-teal-700 hover:bg-teal-600 border border-teal-400 text-white font-black px-5 py-2 rounded-xl shadow-lg active:scale-95 text-lg cursor-pointer">
+                        סובב שמאלה ↪️
+                    </button>
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Success Modal Overlay -->
+        <div id="success-overlay" class="hidden absolute inset-0 bg-slate-950/95 flex flex-col items-center justify-center z-50 p-6 text-center backdrop-blur-md">
+            <div class="text-7xl mb-3 animate-bounce">🔓✨</div>
+            <h2 class="text-4xl font-black text-amber-400 mb-3">המנעול נפתח בהצלחה!</h2>
+            <p id="explanation-text" class="text-xl text-teal-100 max-w-xl leading-relaxed mb-6 font-medium bg-slate-900 p-4 rounded-xl border border-teal-500/40">
+                הסבר...
+            </p>
+            <button onclick="nextLevel()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-xl font-black px-10 py-3 rounded-xl shadow-2xl hover:scale-105 active:scale-95 transition cursor-pointer">
+                לחוק הבא ➔
+            </button>
+        </div>
+
+        <!-- Completion Screen -->
+        <div id="complete-screen" class="hidden absolute inset-0 bg-slate-950 flex flex-col items-center justify-center z-50 p-6 text-center">
+            <div class="text-7xl mb-4">🏆</div>
+            <h2 class="text-4xl font-black text-amber-400 mb-4">כל הכבוד! פתחתם את כל המנעולים!</h2>
+            <p class="text-xl text-slate-300 max-w-2xl mb-6 leading-relaxed">
+                הצלחתם להתאים ולפתוח את כל החוקים מתוך ספר ויקרא בעזרת תיאורי המקרה מהכיתה!
+            </p>
+            <button onclick="restartGame()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-2xl font-black px-10 py-4 rounded-2xl shadow-2xl transition active:scale-95 cursor-pointer">
+                משחק חדש 🔄
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none z-40 overflow-hidden"></div>
+
+    <script>
+        const gameData = [
+            {
+                id: 1,
+                story: "נגה ויעל רבו במהלך הפעולה בתנועת הנוער. המדריכה שלהן רצתה להשלים ביניהן, אך היא הקשיבה רק לנגה ולא ליעל.",
+                correctLaw: "בְּצֶדֶק תִּשְׁפֹּט עֲמִיתֶךָ",
+                explanation: "חוק זה דורש לנהוג בצדק ובהוגנות מוחלטת, להקשיב לשני הצדדים בשווה ולא להפלות."
+            },
+            {
+                id: 2,
+                story: "דניאל לא השאיל מחק לעידו, כי בשבוע שעבר עידו לא השאיל לו עיפרון.",
+                correctLaw: "לֹא תִקֹּם וְלֹא תִטֹּר",
+                explanation: "איסור נקימה ונטירה מלמד אותנו למחול, לא לשמור טינה ולא לגמול ברעה תחת רעה."
+            },
+            {
+                id: 3,
+                story: "קבוצת ילדים לעגה לילד אחר בזמן שהוא לא היה בחדר והוא לא יכול היה לשמוע או להגן על עצמו.",
+                correctLaw: "לֹא תְקַלֵּל חֵרֵשׁ",
+                explanation: "איסור לקלל חרש מורה לנו לא לפגוע באדם שאינו יכול לשמוע או להגן על עצמו."
+            },
+            {
+                id: 4,
+                story: "נועם ואחיו הקטן החליפו ביניהם קלפים. נועם הטעה את אחיו ונתן לו קלף אחד תמורת שלושה. הוא הבטיח לו שזה קלף נדיר במיוחד, על אף שהוא ידע שהקלף רגיל.",
+                correctLaw: "וְלִפְנֵי עִוֵּר לֹא תִתֵּן מִכְשׁוֹל",
+                explanation: "חוק זה אוסר לנצל חוסר ידיעה, תמימות או חולשה של האחר כדי להכשיל אותו או להרוויח על חשבונו."
+            },
+            {
+                id: 5,
+                story: "תלמיד חדש שהגיע מבית ספר אחר הצטרף לכיתה. תלמידי הכיתה הזמינו אותו לשחק איתם בהפסקה ודאגו שירגיש שייך כאילו למד איתם מתחילת השנה.",
+                correctLaw: "כְּאֶזְרָח מִכֶּם יִהְיֶה לָכֶם הַגֵּר",
+                explanation: "חוק זה מורה לנו לנהוג באחווה, בשוויון ובפתיחות כלפי מי שחדש או שונה, ולהעניק לו הרגשה שהוא חלק שווה מכולם."
+            }
+        ];
+
+        const allValues = [
+            "בְּצֶדֶק תִּשְׁפֹּט עֲמִיתֶךָ",
+            "לֹא תִקֹּם וְלֹא תִטֹּר",
+            "לֹא תְקַלֵּל חֵרֵשׁ",
+            "וְלִפְנֵי עִוֵּר לֹא תִתֵּן מִכְשׁוֹל",
+            "כְּאֶזְרָח מִכֶּם יִהְיֶה לָכֶם הַגֵּר"
+        ];
+
+        let currentLevel = 0;
+        let currentRotation = 0;
+        let selectedIndex = 0;
+
+        function initGame() {
+            currentLevel = 0;
+            currentRotation = 0;
+            selectedIndex = 0;
+            document.getElementById('complete-screen').classList.add('hidden');
+            document.getElementById('success-overlay').classList.add('hidden');
+            renderWheel();
+            loadLevel();
+        }
+
+        function renderWheel() {
+            const wheel = document.getElementById('wheel');
+            wheel.innerHTML = '';
+            const total = allValues.length;
+            const angleStep = 360 / total;
+
+            allValues.forEach((val, idx) => {
+                const item = document.createElement('div');
+                const angle = idx * angleStep;
+                item.className = 'absolute text-center px-1 font-bold text-xs md:text-sm text-amber-200 flex items-center justify-center leading-tight';
+                item.style.width = '150px';
+                item.style.height = '44px';
+                item.style.transform = `rotate(${angle}deg) translateY(-105px)`;
+                item.style.transformOrigin = 'center center';
+                item.innerText = val;
+                wheel.appendChild(item);
+            });
+            
+            document.getElementById('wheel').style.transform = `rotate(0deg)`;
+        }
+
+        function loadLevel() {
+            const data = gameData[currentLevel];
+            document.getElementById('law-title').innerText = `"${data.story}"`;
+            document.getElementById('lock-icon').innerText = '🔒';
+            document.getElementById('lock-status-text').innerText = 'נעול - בחרו חוק בגלגל';
+            document.getElementById('lock-status-text').className = 'text-lg font-black text-rose-400';
+
+            // מציאת האינדקס של התשובה הנכונה
+            const correctIndex = allValues.indexOf(data.correctLaw);
+            const total = allValues.length;
+            const step = 360 / total;
+
+            // הגרלת היסט אקראי שאינו 0 (בין 1 ל-total-1) כדי לוודא שהגלגל נעצר על חוק שגויה!
+            const wrongOffsetSteps = Math.floor(Math.random() * (total - 1)) + 1;
+            const targetWrongIndex = (correctIndex + wrongOffsetSteps) % total;
+
+            // חישוב זווית הסיבוב המדויקת שבה targetWrongIndex ממוקם בחלק העליון (מול החץ)
+            const targetAngleForWrong = (total - targetWrongIndex) % total * step;
+
+            // הוספת 1-2 סיבובים שלמים (360-720 מעלות) לאפקט סחרור מרשים בעת מעבר שלב
+            const fullSpins = (Math.floor(Math.random() * 2) + 1) * 360;
+
+            // עדכון הזווית הכוללת כך שתעצר תמיד על תשובה שגויה
+            currentRotation = currentRotation + fullSpins + ((targetAngleForWrong - (currentRotation % 360) + 360) % 360);
+            
+            document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
+
+            const normalizedRotation = (360 - (currentRotation % 360)) % 360;
+            selectedIndex = Math.round(normalizedRotation / step) % total;
+        }
+
+        function rotateWheel(direction) {
+            const step = 360 / allValues.length;
+            currentRotation += direction * step;
+            document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
+
+            const normalizedRotation = (360 - (currentRotation % 360)) % 360;
+            selectedIndex = Math.round(normalizedRotation / step) % allValues.length;
+        }
+
+        function checkSelection() {
+            const data = gameData[currentLevel];
+            const selectedText = allValues[selectedIndex];
+
+            if (selectedText === data.correctLaw) {
+                document.getElementById('lock-icon').innerText = '🔓';
+                document.getElementById('lock-status-text').innerText = 'נפתח בהצלחה!';
+                document.getElementById('lock-status-text').className = 'text-lg font-black text-emerald-400';
+                
+                triggerConfetti();
+
+                setTimeout(() => {
+                    document.getElementById('explanation-text').innerText = data.explanation;
+                    document.getElementById('success-overlay').classList.remove('hidden');
+                }, 600);
+            } else {
+                document.getElementById('lock-status-text').innerText = 'לא מתאים, סובבו עוד';
+                document.getElementById('lock-status-text').className = 'text-lg font-black text-amber-400 animate-pulse';
+            }
+        }
+
+        function nextLevel() {
+            document.getElementById('success-overlay').classList.add('hidden');
+            currentLevel++;
+            if (currentLevel < gameData.length) {
+                loadLevel();
+            } else {
+                document.getElementById('complete-screen').classList.remove('hidden');
+                triggerConfetti();
+            }
+        }
+
+        function triggerConfetti() {
+            const container = document.getElementById('confetti-container');
+            container.innerHTML = '';
+            const colors = ['#facc15', '#10b981', '#38bdf8', '#f43f5e', '#a855f7'];
+
+            for (let i = 0; i < 70; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 95 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = (Math.random() * 1.2) + 's';
+                confetti.style.transform = `scale(${Math.random() * 0.8 + 0.6})`;
+                container.appendChild(confetti);
+            }
+        }
+
+        function restartGame() {
+            initGame();
+        }
+
+        window.onload = function() {
+            initGame();
+        };
+    </script>
+</body>
+</html>
