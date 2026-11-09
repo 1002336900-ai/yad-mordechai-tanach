@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חוקי התנ"ך - קיר 2 - מתיחת קווים</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            user-select: none;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* קיר 2 - ערכת סגול-זהב מעוצבת מתוך משפחת העיצוב האימרסיבית */
+        .bg-wall2 {
+            background-color: #0b071e;
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(147, 51, 234, 0.18) 0%, transparent 65%),
+                radial-gradient(#2e1065 2px, transparent 2px);
+            background-size: 100% 100%, 34px 34px;
+        }
+
+        .gold-glow {
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.3);
+        }
+
+        .item-card {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s, border-color 0.2s;
+            touch-action: none; /* מאפשר גרירה במגע ללא גלילה של הדף */
+        }
+        .item-card:hover {
+            transform: scale(1.02);
+        }
+        .item-card.selected {
+            border-color: #facc15 !important;
+            background-color: #3b0764 !important;
+            box-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
+            transform: scale(1.03);
+        }
+        .item-card.matched {
+            border-color: #10b981 !important;
+            background-color: #064e3b !important;
+            opacity: 0.85;
+            cursor: default;
+        }
+
+        /* SVG קו חיבור */
+        #lines-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* חלקיקי קונפטי */
+        .confetti-piece {
+            position: absolute;
+            width: 14px;
+            height: 24px;
+            top: -30px;
+            opacity: 0.9;
+            animation: fall 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-wall2 h-screen w-screen m-0 p-0 overflow-hidden flex items-center justify-center relative">
+
+    <!-- Outer 16:9 Aspect Ratio Container Centered on Screen -->
+    <div class="relative w-full max-w-[177.78vh] h-full max-h-[56.25vw] flex flex-col justify-between p-4 md:p-6 box-border my-auto mx-auto overflow-hidden">
+
+        <!-- SVG Container for Drawing Connecting Lines -->
+        <svg id="lines-svg">
+            <!-- Lines will be dynamically drawn here -->
+        </svg>
+
+        <!-- Consolidated Top Area: Instruction Sub-Header & Controls -->
+        <div class="text-center mt-1 mb-2 z-30 flex flex-col items-center gap-2">
+            <p class="text-xl md:text-2xl font-black text-amber-200 drop-shadow">
+                גררו קו בעזרת האצבע או העיפרון מהחוק להסבר המתאים!
+            </p>
+
+            <!-- Controls: Matches Count & Restart Button directly below instructions -->
+            <div class="flex items-center gap-4 mt-0.5">
+                <div class="flex items-center gap-2 bg-purple-950/90 border border-amber-400/50 px-4 py-1.5 rounded-xl shadow-md">
+                    <span class="text-xl">🔗</span>
+                    <span class="text-base text-amber-200 font-bold">התאמות:</span>
+                    <span id="score-display" class="text-xl font-black text-amber-400">0 / 5</span>
+                </div>
+
+                <button onclick="restartGame()" class="bg-purple-900/90 hover:bg-purple-800 border border-purple-400/50 text-amber-300 text-base font-bold px-4 py-1.5 rounded-xl shadow-md transition active:scale-95 flex items-center gap-2">
+                    <span>🔄</span>
+                    <span>התחל מחדש</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Game Canvas (Two Columns Matching - Beautifully Centered Across 16:9 Aspect) -->
+        <main class="flex-1 grid grid-cols-2 gap-6 md:gap-12 my-auto max-w-5xl mx-auto w-full z-30 relative items-center px-4">
+            
+            <!-- Right Column: Biblical Verses (Torah Laws) -->
+            <div class="flex flex-col gap-2.5">
+                <h3 class="text-center text-sm md:text-base font-bold text-amber-300 bg-purple-950/90 py-2 rounded-xl border border-amber-400/40 shadow-lg">
+                    📜 חוקי התורה (ויקרא י"ט)
+                </h3>
+                <div id="laws-column" class="flex flex-col gap-2.5">
+                    <!-- Laws dynamically rendered -->
+                </div>
+            </div>
+
+            <!-- Left Column: Plain Hebrew Explanations -->
+            <div class="flex flex-col gap-2.5">
+                <h3 class="text-center text-sm md:text-base font-bold text-amber-300 bg-purple-950/90 py-2 rounded-xl border border-amber-400/40 shadow-lg flex items-center justify-center">
+                    💡 הסבר בלשון ימינו
+                </h3>
+                <div id="explanations-column" class="flex flex-col gap-2.5">
+                    <!-- Explanations dynamically rendered -->
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Feedback Toast Centered -->
+        <div id="toast-msg" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-slate-900/95 border-2 border-amber-400 px-8 py-3 rounded-xl text-xl font-bold shadow-2xl text-center">
+        </div>
+
+        <!-- Completion Screen Overlay (Centered inside 16:9 area) -->
+        <div id="complete-screen" class="hidden absolute inset-0 bg-purple-950/95 flex flex-col items-center justify-center z-50 p-6 text-center backdrop-blur-md">
+            <div class="flex flex-col items-center justify-center max-w-2xl mx-auto text-center">
+                <div class="text-6xl md:text-7xl mb-3">👑</div>
+                <h2 class="text-3xl md:text-4xl font-black text-amber-400 mb-3 drop-shadow-lg">כל הכבוד! חיברתם את כל החוקים!</h2>
+                <p class="text-lg md:text-xl text-purple-200 mb-6 leading-relaxed font-medium">
+                    הצלחתם להתאים בהצלחה בין חוקי התורה המקוריים בספר ויקרא י"ט לבין המשמעות שלהם בחיי היומיום.
+                </p>
+                <button onclick="restartGame()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xl md:text-2xl font-black px-8 py-3 rounded-2xl shadow-2xl transition active:scale-95">
+                    התחל משחק חדש 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none z-40 overflow-hidden"></div>
+
+    <script>
+        // הנתונים המדויקים מתוך ויקרא י"ט וההסברים בלשון ימינו
+        const matchingPairs = [
+            {
+                id: 1,
+                law: "לֹא תָלִין פְּעֻלַּת שָׂכִיר",
+                explanation: "יש לשלם לעובד בזמן ולא לעכב את התשלום"
+            },
+            {
+                id: 2,
+                law: "לֹא תַעֲשׂוּ עָוֶל בַּמִּשְׁפָּט",
+                explanation: "חובה לנהוג בצדק ובשוויון ללא אפליה במשפט"
+            },
+            {
+                id: 3,
+                law: "לֹא תֵלֵךְ רָכִיל בְּעַמֶּיךָ",
+                explanation: "אסור לספר על אחרים דברים שעלולים לפגוע בהם"
+            },
+            {
+                id: 4,
+                law: "לֹא תַעֲמֹד עַל דַּם רֵעֶךָ",
+                explanation: "כשאדם נמצא בסכנה, עליך להציל אותו ולא להתעלם ממנו"
+            },
+            {
+                id: 5,
+                law: "כְּאֶזְרָח מִכֶּם יִהְיֶה לָכֶם הַגֵּר",
+                explanation: "יש להתייחס באופן שווה לזרים הנמצאים איתך בארצך"
+            }
+        ];
+
+        let selectedLawId = null;
+        let selectedExpId = null;
+        let matchedIds = new Set();
+        let activeLine = null;
+        let isDragging = false;
+        let dragSourceCard = null;
+
+        function shuffle(array) {
+            return [...array].sort(() => Math.random() - 0.5);
+        }
+
+        function initGame() {
+            matchedIds.clear();
+            selectedLawId = null;
+            selectedExpId = null;
+            document.getElementById('score-display').innerText = `0 / ${matchingPairs.length}`;
+            document.getElementById('lines-svg').innerHTML = '';
+            document.getElementById('complete-screen').classList.add('hidden');
+            document.getElementById('complete-screen').classList.remove('flex');
+
+            const lawsCol = document.getElementById('laws-column');
+            const expsCol = document.getElementById('explanations-column');
+
+            lawsCol.innerHTML = '';
+            expsCol.innerHTML = '';
+
+            const shuffledExplanations = shuffle(matchingPairs);
+
+            matchingPairs.forEach(pair => {
+                const card = document.createElement('div');
+                card.id = `law-${pair.id}`;
+                card.dataset.id = pair.id;
+                card.dataset.type = 'law';
+                card.className = 'item-card bg-purple-950/95 border-2 border-amber-400/60 hover:border-amber-400 px-4 py-2.5 rounded-xl text-base md:text-lg font-bold text-amber-100 flex items-center justify-between cursor-pointer shadow-lg w-full box-border leading-snug';
+                card.innerHTML = `<span class="flex-1 text-right leading-snug">${pair.law}</span>`;
+                
+                addInteractionListeners(card);
+                lawsCol.appendChild(card);
+            });
+
+            shuffledExplanations.forEach(pair => {
+                const card = document.createElement('div');
+                card.id = `exp-${pair.id}`;
+                card.dataset.id = pair.id;
+                card.dataset.type = 'exp';
+                card.className = 'item-card bg-purple-950/95 border-2 border-purple-400/60 hover:border-purple-300 px-4 py-2.5 rounded-xl text-sm md:text-base font-bold text-purple-100 flex items-center justify-between cursor-pointer shadow-lg w-full box-border leading-snug';
+                card.innerHTML = `<span class="flex-1 text-right leading-snug">${pair.explanation}</span>`;
+                
+                addInteractionListeners(card);
+                expsCol.appendChild(card);
+            });
+
+            window.addEventListener('resize', redrawCompletedLines);
+        }
+
+        function addInteractionListeners(card) {
+            // לחיצה רגילה
+            card.addEventListener('click', (e) => {
+                if (isDragging) return;
+                handleCardClick(card);
+            });
+
+            // מגע וגרירה באמצעות אצבע / עפרון אינטראקטיבי
+            card.addEventListener('pointerdown', (e) => {
+                const id = parseInt(card.dataset.id);
+                if (matchedIds.has(id)) return;
+
+                isDragging = true;
+                dragSourceCard = card;
+                card.releasePointerCapture(e.pointerId);
+
+                createActiveLine(card, e.clientX, e.clientY);
+            });
+        }
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isDragging || !activeLine) return;
+            updateActiveLine(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('pointerup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const targetElement = document.elementFromPoint(e.clientX, e.clientY);
+            const targetCard = targetElement ? targetElement.closest('.item-card') : null;
+
+            if (activeLine) {
+                activeLine.remove();
+                activeLine = null;
+            }
+
+            if (targetCard && dragSourceCard && targetCard !== dragSourceCard) {
+                const srcType = dragSourceCard.dataset.type;
+                const tgtType = targetCard.dataset.type;
+
+                if (srcType !== tgtType) {
+                    const lawCard = srcType === 'law' ? dragSourceCard : targetCard;
+                    const expCard = srcType === 'exp' ? dragSourceCard : targetCard;
+
+                    selectLaw(parseInt(lawCard.dataset.id));
+                    selectExp(parseInt(expCard.dataset.id));
+                }
+            }
+            dragSourceCard = null;
+        });
+
+        function getCardCenter(element) {
+            const svg = document.getElementById('lines-svg');
+            const svgRect = svg.getBoundingClientRect();
+            const rect = element.getBoundingClientRect();
+            
+            return {
+                x: (rect.left + rect.width / 2) - svgRect.left,
+                y: (rect.top + rect.height / 2) - svgRect.top
+            };
+        }
+
+        function createActiveLine(sourceCard, cursorX, cursorY) {
+            const svg = document.getElementById('lines-svg');
+            const svgRect = svg.getBoundingClientRect();
+            const center = getCardCenter(sourceCard);
+
+            activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            activeLine.setAttribute('x1', center.x);
+            activeLine.setAttribute('y1', center.y);
+            activeLine.setAttribute('x2', cursorX - svgRect.left);
+            activeLine.setAttribute('y2', cursorY - svgRect.top);
+            activeLine.setAttribute('stroke', '#facc15');
+            activeLine.setAttribute('stroke-width', '5');
+            activeLine.setAttribute('stroke-dasharray', '8,8');
+            svg.appendChild(activeLine);
+        }
+
+        function updateActiveLine(cursorX, cursorY) {
+            if (activeLine) {
+                const svg = document.getElementById('lines-svg');
+                const svgRect = svg.getBoundingClientRect();
+                activeLine.setAttribute('x2', cursorX - svgRect.left);
+                activeLine.setAttribute('y2', cursorY - svgRect.top);
+            }
+        }
+
+        function handleCardClick(card) {
+            const id = parseInt(card.dataset.id);
+            const type = card.dataset.type;
+
+            if (matchedIds.has(id)) return;
+
+            if (type === 'law') {
+                selectLaw(id);
+            } else {
+                selectExp(id);
+            }
+        }
+
+        function selectLaw(id) {
+            if (selectedLawId) {
+                document.getElementById(`law-${selectedLawId}`)?.classList.remove('selected');
+            }
+            selectedLawId = id;
+            document.getElementById(`law-${id}`)?.classList.add('selected');
+            checkMatch();
+        }
+
+        function selectExp(id) {
+            if (selectedExpId) {
+                document.getElementById(`exp-${selectedExpId}`)?.classList.remove('selected');
+            }
+            selectedExpId = id;
+            document.getElementById(`exp-${id}`)?.classList.add('selected');
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (selectedLawId !== null && selectedExpId !== null) {
+                const lawCard = document.getElementById(`law-${selectedLawId}`);
+                const expCard = document.getElementById(`exp-${selectedExpId}`);
+
+                if (selectedLawId === selectedExpId) {
+                    // התאמה נכונה!
+                    matchedIds.add(selectedLawId);
+                    lawCard.classList.remove('selected');
+                    expCard.classList.remove('selected');
+                    lawCard.classList.add('matched');
+                    expCard.classList.add('matched');
+
+                    drawMatchLine(lawCard, expCard);
+                    showToast("✨ התאמה נכונה!", true);
+
+                    document.getElementById('score-display').innerText = `${matchedIds.size} / ${matchingPairs.length}`;
+
+                    selectedLawId = null;
+                    selectedExpId = null;
+
+                    if (matchedIds.size === matchingPairs.length) {
+                        setTimeout(() => {
+                            triggerConfetti();
+                            document.getElementById('complete-screen').classList.remove('hidden');
+                            document.getElementById('complete-screen').classList.add('flex');
+                        }, 500);
+                    }
+                } else {
+                    // טעות
+                    showToast("❌ לא מתאים, נסו שוב", false);
+                    lawCard.classList.remove('selected');
+                    expCard.classList.remove('selected');
+                    selectedLawId = null;
+                    selectedExpId = null;
+                }
+            }
+        }
+
+        function drawMatchLine(card1, card2) {
+            const svg = document.getElementById('lines-svg');
+            const c1 = getCardCenter(card1);
+            const c2 = getCardCenter(card2);
+
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.dataset.lawId = card1.dataset.id;
+            line.setAttribute('x1', c1.x);
+            line.setAttribute('y1', c1.y);
+            line.setAttribute('x2', c2.x);
+            line.setAttribute('y2', c2.y);
+            line.setAttribute('stroke', '#10b981');
+            line.setAttribute('stroke-width', '6');
+            line.setAttribute('stroke-linecap', 'round');
+            svg.appendChild(line);
+        }
+
+        function redrawCompletedLines() {
+            const svg = document.getElementById('lines-svg');
+            svg.innerHTML = '';
+            matchedIds.forEach(id => {
+                const lawCard = document.getElementById(`law-${id}`);
+                const expCard = document.getElementById(`exp-${id}`);
+                if (lawCard && expCard) {
+                    drawMatchLine(lawCard, expCard);
+                }
+            });
+        }
+
+        function showToast(msg, isSuccess) {
+            const toast = document.getElementById('toast-msg');
+            toast.innerText = msg;
+            toast.className = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 border-2 px-8 py-3 rounded-xl text-xl font-bold shadow-2xl text-center ${
+                isSuccess ? 'bg-emerald-950/95 border-emerald-400 text-emerald-200' : 'bg-rose-950/95 border-rose-400 text-rose-200'
+            }`;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 1200);
+        }
+
+        function triggerConfetti() {
+            const container = document.getElementById('confetti-container');
+            container.innerHTML = '';
+            const colors = ['#facc15', '#10b981', '#c084fc', '#f43f5e', '#38bdf8'];
+
+            for (let i = 0; i < 70; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 95 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = (Math.random() * 1.2) + 's';
+                confetti.style.transform = `scale(${Math.random() * 0.8 + 0.6})`;
+                container.appendChild(confetti);
+            }
+        }
+
+        function restartGame() {
+            initGame();
+        }
+
+        window.onload = function() {
+            initGame();
+        };
+    </script>
+</body>
+</html>
