@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>מפענחי החלומות של יוסף - בראשית ל"ז ה'-י"א</title>
+  <!-- טעינת Tailwind CSS לעיצוב רספונסיבי ומדויק -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- טעינת גופנים עבריים קריאים ומקראיים התואמים לקיר הראשון -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Rubik:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    /* מסגרת 16:9 קבועה וממורכזת לחדר האימרסיבי */
+    #immersive-stage {
+      width: min(100vw, calc(100dvh * (16 / 9)));
+      height: min(100dvh, calc(100vw * (9 / 16)));
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 42%, #fffcf5 0%, #f5efe0 58%, #dbeafe 100%);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
+      border: 4px solid #1e3a8a;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .font-bible {
+      font-family: 'Frank Ruhl Libre', serif;
+    }
+
+    /* אנימציות עדינות למשחק */
+    @keyframes popIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes bowFromRight {
+      0%, 100% { transform: rotate(-6deg); }
+      50% { transform: rotate(-36deg); }
+    }
+
+    @keyframes bowFromLeft {
+      0%, 100% { transform: rotate(6deg); }
+      50% { transform: rotate(36deg); }
+    }
+
+    @keyframes bowSunInward {
+      0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+      50% { transform: translate(-8px, 7px) rotate(-18deg); }
+    }
+
+    @keyframes bowMoonInward {
+      0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+      50% { transform: translate(8px, 7px) rotate(18deg); }
+    }
+
+    @keyframes starBowWave {
+      0%, 100% { transform: translateY(0px) scale(0.92); opacity: 0.75; }
+      50% { transform: translateY(5px) scale(1.22); opacity: 1; }
+    }
+
+    @keyframes pulseAura {
+      0%, 100% { transform: scale(0.95); opacity: 0.25; }
+      50% { transform: scale(1.08); opacity: 0.5; }
+    }
+
+    @keyframes spinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spinReverseSlow {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    @keyframes twinkleStar {
+      0%, 100% { transform: scale(0.85); opacity: 0.65; }
+      50% { transform: scale(1.25); opacity: 1; }
+    }
+
+    @keyframes swayMoon {
+      0%, 100% { transform: rotate(-10deg) translateY(0px); }
+      50% { transform: rotate(10deg) translateY(-4px); }
+    }
+
+    @keyframes tiltScaleBeam {
+      0%, 100% { transform: rotate(-7deg); }
+      50% { transform: rotate(7deg); }
+    }
+
+    @keyframes counterTiltPan {
+      0%, 100% { transform: rotate(7deg); }
+      50% { transform: rotate(-7deg); }
+    }
+
+    .animate-pop {
+      animation: popIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-shake {
+      animation: shake 0.38s ease-in-out;
+    }
+
+    .animate-float {
+      animation: floatSlow 3.2s ease-in-out infinite;
+    }
+
+    .svg-center {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .svg-bottom {
+      transform-box: fill-box;
+      transform-origin: bottom center;
+    }
+
+    .anim-bow-right {
+      animation: bowFromRight 2.6s ease-in-out infinite;
+    }
+
+    .anim-bow-left {
+      animation: bowFromLeft 2.6s ease-in-out infinite;
+    }
+
+    .anim-bow-sun {
+      animation: bowSunInward 3s ease-in-out infinite;
+    }
+
+    .anim-bow-moon {
+      animation: bowMoonInward 3s ease-in-out infinite 0.4s;
+    }
+
+    .anim-star-bow {
+      animation: starBowWave 2.2s ease-in-out infinite;
+    }
+
+    .anim-aura {
+      animation: pulseAura 2.6s ease-in-out infinite;
+    }
+
+    .anim-spin-slow {
+      animation: spinSlow 18s linear infinite;
+    }
+
+    .anim-spin-rev {
+      animation: spinReverseSlow 22s linear infinite;
+    }
+
+    .anim-twinkle {
+      animation: twinkleStar 2.2s ease-in-out infinite;
+    }
+
+    .anim-moon {
+      animation: swayMoon 3.6s ease-in-out infinite;
+    }
+
+    .anim-beam {
+      animation: tiltScaleBeam 3.4s ease-in-out infinite;
+    }
+
+    .anim-pan {
+      animation: counterTiltPan 3.4s ease-in-out infinite;
+    }
+
+    .animate-shake {
+      animation: shake 0.38s ease-in-out;
+    }
+
+    .animate-float {
+      animation: floatSlow 3.2s ease-in-out infinite;
+    }
+
+    /* כרטיסיות תשובה לחיצות לגובה נגיש */
+    .choice-card {
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 3px 0 #1e3a8a;
+    }
+
+    .choice-card:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #1e3a8a;
+    }
+
+    /* סרגל גלילה עדין למודאלים */
+    .custom-scroll::-webkit-scrollbar {
+      width: 7px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- הבמה המרכזית ביחס 16:9 קבוע -->
+  <div id="immersive-stage">
+
+    <!-- רצועה עליונה: כותרת, ניווט שלבים ומדריך מורה -->
+    <header class="shrink-0 w-full px-4 py-1.5 flex items-center justify-between border-b-2 border-indigo-950/15 bg-gradient-to-l from-slate-900 via-indigo-950 to-slate-900 text-amber-50">
+      <div class="flex items-center gap-2.5">
+        <span class="bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-lg font-extrabold text-xs shadow-xs">
+          בראשית ל"ז • ה'–י"א
+        </span>
+        <h1 class="text-base md:text-xl font-black tracking-tight text-amber-100">
+          מפענחי החלומות של יוסף
+        </h1>
+      </div>
+
+      <!-- לשוניות מעבר בין שלבי החלומות וההשוואה -->
+      <nav class="flex items-center gap-1.5 bg-slate-800/90 p-1 rounded-xl border border-amber-400/30">
+        <button
+          id="tab-stage-0"
+          type="button"
+          onclick="jumpToStage(0)"
+          class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer"
+        >
+          🌾 חלום 1: האלומות
+        </button>
+        <button
+          id="tab-stage-1"
+          type="button"
+          onclick="jumpToStage(1)"
+          class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer"
+        >
+          ☀️ חלום 2: השמש והכוכבים
+        </button>
+        <button
+          id="tab-stage-2"
+          type="button"
+          onclick="jumpToStage(2)"
+          class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer"
+        >
+          ⚖️ השוואת 2 החלומות
+        </button>
+      </nav>
+
+      <!-- כפתורי עזר עליונים -->
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          onclick="toggleVersesModal(true)"
+          class="bg-sky-700 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow cursor-pointer transition"
+        >
+          📜 מגילת פסוקים
+        </button>
+        <button
+          type="button"
+          onclick="toggleTeacherModal(true)"
+          class="bg-amber-600 hover:bg-amber-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow cursor-pointer transition"
+        >
+          📋 מדריך למורה
+        </button>
+      </div>
+    </header>
+
+    <!-- אזור המשחק המרכזי (ממורכז ונגיש לתלמידי כיתות ד'-ו') -->
+    <main class="flex-1 min-h-0 w-full px-4 py-2 flex items-stretch justify-between gap-3 overflow-hidden">
+
+      <!-- צד ימין (76%): שאלות החלום או טבלת ההשוואה -->
+      <section id="dream-question-area" class="w-[76%] h-full min-h-0 flex flex-col justify-between gap-2 z-10">
+
+        <!-- כרטיס השאלה העליון -->
+        <div id="question-box" class="shrink-0 bg-white/95 border-2 border-indigo-900/25 rounded-2xl px-4 py-2.5 shadow-sm flex flex-col justify-center">
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <div class="flex items-center gap-2">
+              <span id="stage-badge" class="bg-indigo-900 text-amber-200 px-2.5 py-0.5 rounded-lg text-xs font-extrabold">
+                החלום הראשון • חלום האלומות
+              </span>
+              <span id="skill-badge" class="bg-sky-100 text-sky-950 border border-sky-300 px-2.5 py-0.5 rounded-lg text-xs font-bold">
+                מיומנות מפמ"ר: זיהוי סמלים בחלום
+              </span>
+            </div>
+            <span id="q-counter-badge" class="bg-amber-100 text-amber-950 border border-amber-400/60 px-2.5 py-0.5 rounded-lg text-xs font-extrabold">
+              שאלה 1 מתוך 3
+            </span>
+          </div>
+
+          <h2 id="question-title" class="text-lg md:text-2xl font-black text-slate-900 leading-snug">
+            <!-- טקסט השאלה מוזרק כאן -->
+          </h2>
+
+          <p id="question-hint" class="text-xs md:text-sm text-slate-600 font-medium mt-0.5">
+            <!-- רמז מכוון לפסוק -->
+          </p>
+
+          <!-- סרגל משוב מובנה -->
+          <div id="dream-feedback" class="hidden mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center"></div>
+        </div>
+
+        <!-- 4 כרטיסיות בחירה גדולות בגובה נגיש לתלמידים -->
+        <div id="options-container" class="flex-1 min-h-0 grid grid-cols-2 gap-2.5 py-0.5">
+          <!-- 4 כפתורי התשובה מוזרקים דינמית בסדר אקראי -->
+        </div>
+
+      </section>
+
+      <!-- תצוגת לוח ההשוואה האינטראקטיבי בין 2 החלומות (מוצג בשלב 3) -->
+      <section id="comparison-area" class="hidden w-[76%] h-full min-h-0 flex flex-col justify-between gap-1.5 z-10 animate-pop">
+        <div class="shrink-0 bg-white/95 border-2 border-indigo-900/25 rounded-2xl px-3.5 py-1 flex items-center justify-between gap-2 shadow-xs">
+          <div>
+            <h2 class="text-sm md:text-base font-black text-indigo-950 flex items-center gap-1.5 leading-tight">
+              <span>⚖️</span> השוואה בין שני חלומות יוסף
+            </h2>
+            <p class="text-[11px] text-slate-700 font-medium leading-tight">
+              לחצו על משבצת ריקה בטבלה ובחרו למטה את התשובה המתאימה!
+            </p>
+          </div>
+          <div id="comp-score-badge" class="bg-indigo-100 border border-indigo-400 text-indigo-950 px-2.5 py-0.5 rounded-xl font-extrabold text-xs shrink-0">
+            הושלמו 0 / 5 קריטריונים
+          </div>
+        </div>
+
+        <!-- טבלת ההשוואה האינטראקטיבית -->
+        <div class="flex-1 min-h-0 bg-white/95 border-2 border-indigo-900/25 rounded-2xl overflow-hidden flex flex-col shadow-sm">
+          <!-- כותרות הטבלה -->
+          <div class="shrink-0 grid grid-cols-12 bg-slate-900 border-b border-amber-500/50 text-[11px] md:text-xs font-black py-1 px-2 text-center text-amber-100">
+            <div class="col-span-3 text-right pr-1.5">נושא ההשוואה</div>
+            <div class="col-span-4 text-amber-300 flex items-center justify-center gap-1">
+              <span>🌾</span> חלום 1 (האלומות)
+            </div>
+            <div class="col-span-5 text-sky-200 flex items-center justify-center gap-1">
+              <span>☀️🌙⭐</span> חלום 2 (השמש והכוכבים)
+            </div>
+          </div>
+
+          <!-- 5 שורות ההשוואה -->
+          <div id="comparison-rows" class="flex-1 min-h-0 flex flex-col justify-between divide-y divide-indigo-900/15 px-2 py-0.5">
+            <!-- מוזרק דינמית -->
+          </div>
+        </div>
+
+        <!-- פאנל בחירה לתא הנבחר בהשוואה: השאלה בשורה עליונה מלאה והאפשרויות מתחתיה -->
+        <div id="comp-chooser-bar" class="shrink-0 bg-amber-50/95 border-2 border-amber-500/80 rounded-2xl px-3 py-1.5 flex flex-col gap-1 shadow-sm">
+          <div id="comp-prompt-text" class="text-xs md:text-sm font-black text-indigo-950 text-right leading-tight">
+            👈 לחצו על כרטיס עם סימן "?" בטבלה כדי לבחור את התשובה המתאימה:
+          </div>
+          <div id="comp-choices-buttons" class="grid grid-cols-3 gap-2 w-full">
+            <!-- כפתורי בחירה להשוואה -->
+          </div>
+        </div>
+      </section>
+
+      <!-- צד שמאל (24%): במת החלום החזותית ומד ההתקדמות -->
+      <aside class="w-[24%] h-full min-h-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 border-2 border-amber-500/50 rounded-2xl p-2.5 flex flex-col items-center justify-between text-amber-50 shadow-md z-10">
+        <div class="text-center shrink-0">
+          <h3 id="visual-stage-title" class="text-sm md:text-base font-black text-amber-300 leading-tight">
+            חזיון החלום הראשון
+          </h3>
+          <p id="visual-stage-sub" class="text-[11px] text-sky-200 leading-tight mt-0.5">
+            פתרו את השאלות כדי להאיר את החלום
+          </p>
+        </div>
+
+        <!-- איור SVG דינמי המשתנה לפי החלום -->
+        <div id="dream-visual-box" class="flex-1 min-h-0 w-full flex items-center justify-center my-1 overflow-hidden">
+          <!-- מוזרק דינמית (אלומות חיטים / שמש ירח וכוכבים) -->
+        </div>
+
+        <!-- מד התקדמות שלבי -->
+        <div class="shrink-0 w-full bg-slate-800/90 border border-amber-400/30 rounded-xl p-2 text-center">
+          <div id="aside-progress-text" class="text-xs font-extrabold text-amber-200 mb-1">
+            התקדמות בחלום 1: 0 / 3
+          </div>
+          <div class="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
+            <div id="aside-progress-bar" class="h-full bg-gradient-to-l from-amber-400 to-sky-400 transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- רצועה תחתונה להנחיה וניווט מהיר -->
+    <footer class="shrink-0 w-full px-4 py-1 bg-indigo-950/10 border-t border-indigo-950/15 flex items-center justify-between text-xs text-slate-900 font-bold">
+      <span id="footer-tip">💡 לחצו על כרטיסיית התשובה המתאימה מתוך הכתוב בבראשית פרק ל"ז.</span>
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="prevStep()" class="hover:text-indigo-700 cursor-pointer">◀ הקודם</button>
+        <span class="text-slate-400">|</span>
+        <button type="button" onclick="nextStep()" class="hover:text-indigo-700 cursor-pointer">הבא ▶</button>
+      </div>
+    </footer>
+
+    <!-- מודאל מגילת פסוקים (בראשית ל"ז ה'-י"א) -->
+    <div id="verses-modal" class="hidden absolute inset-0 bg-slate-950/75 backdrop-blur-xs z-30 flex items-center justify-center p-5">
+      <div class="bg-[#fffcf5] border-4 border-indigo-900 rounded-3xl max-w-4xl w-full max-h-[90%] flex flex-col p-5 shadow-2xl animate-pop">
+        <div class="shrink-0 flex items-center justify-between border-b-2 border-indigo-900/15 pb-2.5 mb-3">
+          <h3 class="text-xl md:text-2xl font-black text-indigo-950 flex items-center gap-2">
+            <span>📜</span> ספר בראשית, פרק ל"ז, פסוקים ה'–י"א
+          </h3>
+          <button type="button" onclick="toggleVersesModal(false)" class="bg-rose-600 hover:bg-rose-500 text-white px-3.5 py-1.5 rounded-xl font-bold text-sm cursor-pointer">
+            ✕ סגור מגילה
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll font-bible text-lg md:text-xl leading-relaxed text-slate-900 space-y-2.5 bg-amber-50/70 p-4 rounded-2xl border border-amber-300">
+          <p><strong class="text-indigo-800">(ה)</strong> וַיַּחֲלֹם יוֹסֵף חֲלוֹם וַיַּגֵּד לְאֶחָיו; וַיּוֹסִפוּ עוֹד שְׂנֹא אֹתוֹ.</p>
+          <p><strong class="text-indigo-800">(ו)</strong> וַיֹּאמֶר אֲלֵיהֶם: שִׁמְעוּ-נָא הַחֲלוֹם הַזֶּה אֲשֶׁר חָלָמְתִּי.</p>
+          <p><strong class="text-indigo-800">(ז)</strong> וְהִנֵּה אֲנַחְנוּ מְאַלְּמִים אֲלֻמִּים בְּתוֹךְ הַשָּׂדֶה, וְהִנֵּה קָמָה אֲלֻמָּתִי וְגַם-נִצָּבָה; וְהִנֵּה תְסֻבֶּינָה אֲלֻמֹּתֵיכֶם וַתִּשְׁתַּחֲוֶיןָ לַאֲלֻמָּתִי.</p>
+          <p><strong class="text-indigo-800">(ח)</strong> וַיֹּאמְרוּ לוֹ אֶחָיו: הֲמָלֹךְ תִּמְלֹךְ עָלֵינוּ אִם-מָשׁוֹל תִּמְשֹׁל בָּנוּ? וַיּוֹסִפוּ עוֹד שְׂנֹא אֹתוֹ עַל-חֲלֹמֹתָיו וְעַל-דְּבָרָיו.</p>
+          <p><strong class="text-indigo-800">(ט)</strong> וַיַּחֲלֹם עוֹד חֲלוֹם אַחֵר וַיְסַפֵּר אֹתוֹ לְאֶחָיו; וַיֹּאמֶר: הִנֵּה חָלַמְתִּי חֲלוֹם עוֹד, וְהִנֵּה הַשֶּׁמֶשׁ וְהַיָּרֵחַ וְאַחַד עָשָׂר כּוֹכָבִים מִשְׁתַּחֲוִים לִי.</p>
+          <p><strong class="text-indigo-800">(י)</strong> וַיְסַפֵּר אֶל-אָבִיו וְאֶל-אֶחָיו, וַיִּגְעַר-בּוֹ אָבִיו וַיֹּאמֶר לוֹ: מָה הַחֲלוֹם הַזֶּה אֲשֶׁר חָלָמְתָּ? הֲבוֹא נָבוֹא אֲנִי וְאִמְּךָ וְאַחֶיךָ לְהִשְׁתַּחֲוֺת לְךָ אָרְצָה?</p>
+          <p><strong class="text-indigo-800">(יא)</strong> וַיְקַנְאוּ-בוֹ אֶחָיו; וְאָבִיו שָׁמַר אֶת-הַדָּבָר.</p>
+        </div>
+
+        <div class="shrink-0 mt-3 text-center">
+          <button type="button" onclick="toggleVersesModal(false)" class="bg-indigo-800 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl font-bold text-base cursor-pointer shadow">
+            מצאתי את התשובה! חזרה למשחק
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- מודאל מדריך למורה וטבלת סיכום מלאה -->
+    <div id="teacher-modal" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-xs z-40 flex items-center justify-center p-5">
+      <div class="bg-white border-4 border-indigo-950 rounded-3xl w-full max-w-5xl h-[88%] flex flex-col p-5 shadow-2xl animate-pop">
+        <div class="shrink-0 flex items-center justify-between border-b-2 border-slate-200 pb-2.5 mb-3">
+          <div>
+            <h3 class="text-xl md:text-2xl font-black text-indigo-950">מדריך למורה וסיכום השוואת החלומות (בראשית ל"ז ה'–י"א)</h3>
+            <p class="text-xs md:text-sm text-slate-600">שאלות הבנה, זיהוי סמלים, רגשות הדמויות והשוואה ברמת מבחן מפמ"ר</p>
+          </div>
+          <button type="button" onclick="toggleTeacherModal(false)" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-1.5 rounded-xl font-bold cursor-pointer">
+            ✕ חזרה למשחק
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll pl-2 space-y-4 text-right text-sm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-amber-50 border border-amber-300 rounded-2xl p-3.5">
+              <h4 class="font-black text-base text-amber-950 mb-1.5">🌾 החלום הראשון (פסוקים ה'–ח')</h4>
+              <ul class="space-y-1 text-slate-800">
+                <li><strong>הסמלים:</strong> אלומות חיטים בשדה; אלומת יוסף קמה ואלומות אחיו משתחווות לה.</li>
+                <li><strong>פירוש החלום (מי משתחווה):</strong> אחיו של יוסף ("המלוך תמלוך עלינו").</li>
+                <li><strong>רגש האחים:</strong> שנאה חזקה עוד יותר ("ויוסיפו עוד שנוא אותו").</li>
+              </ul>
+            </div>
+
+            <div class="bg-sky-50 border border-sky-300 rounded-2xl p-3.5">
+              <h4 class="font-black text-base text-indigo-950 mb-1.5">☀️🌙⭐ החלום השני (פסוקים ט'–י"א)</h4>
+              <ul class="space-y-1 text-slate-800">
+                <li><strong>הסמלים:</strong> השמש, הירח ואחד עשר כוכבים משתחווים ליוסף.</li>
+                <li><strong>פירוש החלום (מי משתחווה):</strong> אביו (השמש), אמו (הירח) ואחיו (הכוכבים).</li>
+                <li><strong>רגש האחים:</strong> קנאה ("ויקנאו בו אחיו").</li>
+                <li><strong>תגובת האב יעקב:</strong> גער בו בגלוי, אך שמר את הדבר בליבו (ציפה לראות אם יתגשם).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-300 rounded-2xl p-3.5">
+            <h4 class="font-black text-base text-slate-900 mb-2">⚖️ טבלת ההשוואה המלאה בין שני החלומות:</h4>
+            <table class="w-full text-right border-collapse text-xs md:text-sm">
+              <thead>
+                <tr class="bg-slate-900 text-amber-100">
+                  <th class="p-2 border border-slate-400">נושא ההשוואה</th>
+                  <th class="p-2 border border-slate-400">חלום 1 (האלומות)</th>
+                  <th class="p-2 border border-slate-400">חלום 2 (השמש והכוכבים)</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr>
+                  <td class="p-2 border border-slate-300 font-bold">הזירה / המקום</td>
+                  <td class="p-2 border border-slate-300">בשדה החיטים (על הארץ)</td>
+                  <td class="p-2 border border-slate-300">בשמיים (גרמי השמיים)</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-slate-300 font-bold">הסמלים בחלום</td>
+                  <td class="p-2 border border-slate-300">אלומות חיטים</td>
+                  <td class="p-2 border border-slate-300">השמש, הירח ואחד עשר כוכבים</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-slate-300 font-bold">מי משתחווה ליוסף?</td>
+                  <td class="p-2 border border-slate-300">אחיו של יוסף</td>
+                  <td class="p-2 border border-slate-300">אביו, אמו ואחיו (כל המשפחה)</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-slate-300 font-bold">רגש האחים</td>
+                  <td class="p-2 border border-slate-300">שנאו אותו עוד יותר</td>
+                  <td class="p-2 border border-slate-300">קינאו בו מאוד</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-slate-300 font-bold">רגש ותגובת האב</td>
+                  <td class="p-2 border border-slate-300">לא מסופר על תגובתו</td>
+                  <td class="p-2 border border-slate-300">גער בו, אך שמר את הדבר בליבו</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- מסך סיום חגיגי -->
+    <div id="victory-overlay" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-6">
+      <div class="bg-[#fffcf5] border-4 border-amber-500 rounded-3xl max-w-2xl w-full p-7 text-center shadow-2xl animate-pop">
+        <div class="text-5xl mb-2">🌾☀️🌙⭐👑</div>
+        <h2 class="text-2xl md:text-3xl font-black text-indigo-950 mb-2">כל הכבוד! פענחתם את שני חלומות יוסף!</h2>
+        <p class="text-base md:text-lg text-slate-700 mb-5">
+          זיהיתם את הסמלים, פענחתם מי השתחווה ליוסף, הבנתם את רגשות האחים והאב יעקב, והשלמתם את טבלת ההשוואה בהצלחה!
+        </p>
+        <div class="flex items-center justify-center gap-3">
+          <button type="button" onclick="document.getElementById('victory-overlay').classList.add('hidden')" class="bg-indigo-800 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-2xl font-bold text-base shadow cursor-pointer">
+            צפייה בטבלת ההשוואה
+          </button>
+          <button type="button" onclick="restartGame()" class="bg-amber-600 hover:bg-amber-500 text-white px-6 py-2.5 rounded-2xl font-black text-base shadow cursor-pointer">
+            🔄 שחקו שוב מהתחלה
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // מאגר השאלות לשני החלומות (בראשית ל"ז ה'-י"א)
+    const DREAM_STAGES = [
+      {
+        id: 0,
+        badge: "החלום הראשון • חלום האלומות (פסוקים ה'–ח')",
+        visualTitle: "חלום האלומות בשדה",
+        visualSub: "פסוקים ה'–ח'",
+        questions: [
+          {
+            id: "d1_q1",
+            skill: "זיהוי סמלים בחלום",
+            title: "אילו סמלים ראה יוסף בחלומו הראשון?",
+            hint: "היעזרו בפסוק ז': \"וְהִנֵּה אֲנַחְנוּ מְאַלְּמִים אֲלֻמִּים בְּתוֹךְ הַשָּׂדֶה...\"",
+            options: [
+              { text: "אלומות חיטים בשדה שקמות ומשתחווות לאלומתו", icon: "🌾", correct: true },
+              { text: "שמש, ירח ואחד עשר כוכבים בשמיים", icon: "🌟", correct: false },
+              { text: "שבע פרות שמנות ושבע פרות רזות ליד היאור", icon: "🐄", correct: false },
+              { text: "סולם מוצב ארצה וראשו מגיע השמיימה", icon: "🪜", correct: false }
+            ]
+          },
+          {
+            id: "d1_q2",
+            skill: "פירוש סמלי החלום",
+            title: "לפי פירוש החלום, מי השתחוו ליוסף בחלום הראשון?",
+            hint: "שימו לב למי יוסף מספר את החלום וכיצד הם מגיבים בפסוק ח'.",
+            options: [
+              { text: "אחיו של יוסף", icon: "👬", correct: true },
+              { text: "יעקב אביו ורחל אמו בלבד", icon: "👨‍👩", correct: false },
+              { text: "אנשי ארץ מצרים ופרעה", icon: "🏛️", correct: false },
+              { text: "רועי הצאן של ארץ כנען", icon: "🐑", correct: false }
+            ]
+          },
+          {
+            id: "d1_q3",
+            skill: "הבנת רגשות הדמויות",
+            title: "כיצד חלום האלומות גרם לאחיו של יוסף להרגיש?",
+            hint: "קראו את סוף פסוק ה' ואת סוף פסוק ח'.",
+            options: [
+              { text: "האחים שנאו אותו עוד יותר", icon: "😠", correct: true },
+              { text: "האחים שמחו והתגאו באחיהם הצעיר", icon: "🥳", correct: false },
+              { text: "האחים פחדו מאוד וברחו מהשדה", icon: "😨", correct: false },
+              { text: "האחים צחקו וחשבו שזו בדיחה", icon: "😂", correct: false }
+            ]
+          }
+        ]
+      },
+      {
+        id: 1,
+        badge: "החלום השני • השמש, הירח והכוכבים (פסוקים ט'–י\"א)",
+        visualTitle: "חלום גרמי השמיים",
+        visualSub: "פסוקים ט'–י\"א",
+        questions: [
+          {
+            id: "d2_q1",
+            skill: "זיהוי סמלים בחלום",
+            title: "אילו סמלים ראה יוסף בחלומו השני?",
+            hint: "בדקו בפסוק ט' מה ראה יוסף משתחווה לו.",
+            options: [
+              { text: "השמש, הירח ואחד עשר כוכבים", icon: "☀️", correct: true },
+              { text: "אלומות חיטים עומדות בתוך השדה", icon: "🌾", correct: false },
+              { text: "שלושה סלי לחם לבן על ראשו", icon: "🧺", correct: false },
+              { text: "גפן בעלת שלושה שריגים וענבים", icon: "🍇", correct: false }
+            ]
+          },
+          {
+            id: "d2_q2",
+            skill: "פירוש סמלי החלום",
+            title: "לפי פירוש החלום (מדברי יעקב), מי השתחוו ליוסף בחלום השני?",
+            hint: "קראו את שאלתו של יעקב בפסוק י': \"הֲבוֹא נָבוֹא...\"",
+            options: [
+              { text: "אביו, אמו ואחיו (כל המשפחה)", icon: "👨‍👩‍👦‍👦", correct: true },
+              { text: "אחיו בלבד ללא הוריו", icon: "👬", correct: false },
+              { text: "כוכבי השמיים והמלאכים", icon: "✨", correct: false },
+              { text: "מלכי ארץ כנען ושריה", icon: "👑", correct: false }
+            ]
+          },
+          {
+            id: "d2_q3",
+            skill: "הבנת רגשות האחים",
+            title: "כיצד חלום יוסף השני גרם לאחיו להרגיש?",
+            hint: "בדקו את תחילת פסוק י\"א: \"וַיְקַנְאוּ-בוֹ אֶחָיו\".",
+            options: [
+              { text: "האחים קינאו בו מאוד", icon: "😒", correct: true },
+              { text: "האחים סלחו לו והשלימו איתו", icon: "🤝", correct: false },
+              { text: "האחים התעצבו ובכו", icon: "😢", correct: false },
+              { text: "האחים לא התייחסו לחלום כלל", icon: "😐", correct: false }
+            ]
+          },
+          {
+            id: "d2_q4",
+            skill: "הבנת רגשות ותגובת האב",
+            title: "כיצד חלום יוסף גרם לאביו (יעקב) להרגיש ולהגיב?",
+            hint: "שילוב של פסוק י' (\"וַיִּגְעַר-בּוֹ אָבִיו\") ופסוק י\"א (\"וְאָבִיו שָׁמַר אֶת-הַדָּבָר\").",
+            options: [
+              { text: "יעקב גער בו בגלוי, אך שמר את הדבר בליבו", icon: "🤔", correct: true },
+              { text: "יעקב כעס וגירש את יוסף מהבית", icon: "🚪", correct: false },
+              { text: "יעקב שמח והכין ליוסף מסיבה גדולה", icon: "🎉", correct: false },
+              { text: "יעקב שכח מיד את החלום ולא חשב עליו", icon: "💤", correct: false }
+            ]
+          }
+        ]
+      }
+    ];
+
+    // קריטריונים לטבלת ההשוואה האינטראקטיבית בין 2 החלומות
+    const COMPARISON_ROWS = [
+      {
+        id: "place",
+        label: "הזירה / המקום בחלום",
+        dream1: "בשדה החיטים (על הארץ)",
+        dream2: null,
+        missingSide: "dream2",
+        correctAnswer: "בשמיים (גרמי השמיים)",
+        choices: [
+          "בשמיים (גרמי השמיים)",
+          "בארמון מלך מצרים",
+          "על שפת נהר הירדן"
+        ]
+      },
+      {
+        id: "symbols",
+        label: "הסמלים שבחלום",
+        dream1: null,
+        dream2: "השמש, הירח ואחד עשר כוכבים",
+        missingSide: "dream1",
+        correctAnswer: "אלומות חיטים",
+        choices: [
+          "אלומות חיטים",
+          "שבע שיבולים מלאות",
+          "כבשים ועיזים"
+        ]
+      },
+      {
+        id: "bowing",
+        label: "מי משתחווה ליוסף?",
+        dream1: "אחיו של יוסף",
+        dream2: null,
+        missingSide: "dream2",
+        correctAnswer: "אביו, אמו ואחיו (כל המשפחה)",
+        choices: [
+          "אביו, אמו ואחיו (כל המשפחה)",
+          "רק בני בלהה ובני זלפה",
+          "תושבי ארץ כנען"
+        ]
+      },
+      {
+        id: "brothers",
+        label: "רגש האחים בעקבות החלום",
+        dream1: null,
+        dream2: "קינאו בו מאוד",
+        missingSide: "dream1",
+        correctAnswer: "שנאו אותו עוד יותר",
+        choices: [
+          "שנאו אותו עוד יותר",
+          "שמחו והתרגשו",
+          "התפייסו איתו"
+        ]
+      },
+      {
+        id: "father",
+        label: "רגש ותגובת האב (יעקב)",
+        dream1: "לא מסופר על תגובתו",
+        dream2: null,
+        missingSide: "dream2",
+        correctAnswer: "גער בו, אך שמר את הדבר בליבו",
+        choices: [
+          "גער בו, אך שמר את הדבר בליבו",
+          "האמין מיד והשתחווה ליוסף",
+          "קרע את כתונת הפסים"
+        ]
+      }
+    ];
+
+    // משתני מצב המשחק
+    let currentStage = 0; // 0 = חלום 1, 1 = חלום 2, 2 = השוואת 2 החלומות
+    let currentQuestionIdx = 0;
+    let solvedDreamQuestions = new Set();
+    let solvedComparisons = new Set();
+    let activeComparisonRowId = "place";
+
+    // ערבוב אקראי (Fisher-Yates) כדי שהתשובה הנכונה לא תופיע תמיד ראשונה
+    function shuffleArray(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomizeAllChoices() {
+      DREAM_STAGES.forEach((stage) => {
+        stage.questions.forEach((q) => {
+          q.shuffledOptions = shuffleArray(q.options);
+        });
+      });
+
+      COMPARISON_ROWS.forEach((row) => {
+        row.shuffledChoices = shuffleArray(row.choices);
+      });
+    }
+
+    // מנוע צלילים מובנה
+    let audioCtx = null;
+    function playTone(freq, duration = 0.12, type = "sine") {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.11, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // התעלמות שקטה
+      }
+    }
+
+    function playSuccessChime() {
+      playTone(523.25, 0.13, "triangle");
+      setTimeout(() => playTone(659.25, 0.13, "triangle"), 100);
+      setTimeout(() => playTone(783.99, 0.25, "triangle"), 200);
+    }
+
+    function playErrorBuzz() {
+      playTone(195, 0.22, "sawtooth");
+    }
+
+    // מעבר בין לשוניות המשחק
+    function jumpToStage(stageIndex) {
+      currentStage = stageIndex;
+      currentQuestionIdx = 0;
+      updateStageTabs();
+
+      const dreamArea = document.getElementById("dream-question-area");
+      const compArea = document.getElementById("comparison-area");
+
+      if (currentStage === 0 || currentStage === 1) {
+        compArea.classList.add("hidden");
+        dreamArea.classList.remove("hidden");
+        renderDreamQuestion();
+      } else {
+        dreamArea.classList.add("hidden");
+        compArea.classList.remove("hidden");
+        renderComparisonBoard();
+      }
+
+      renderVisualPanel();
+    }
+
+    // עיצוב כפתורי הניווט העליונים
+    function updateStageTabs() {
+      [0, 1, 2].forEach((idx) => {
+        const btn = document.getElementById(`tab-stage-${idx}`);
+        if (!btn) return;
+        if (idx === currentStage) {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-black bg-amber-400 text-slate-950 shadow-xs cursor-pointer";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold text-amber-100 hover:bg-slate-700 transition cursor-pointer";
+        }
+      });
+    }
+
+    // רינדור שאלה בחלום 1 או חלום 2
+    function renderDreamQuestion() {
+      const stageData = DREAM_STAGES[currentStage];
+      const qData = stageData.questions[currentQuestionIdx];
+      const isSolved = solvedDreamQuestions.has(qData.id);
+
+      document.getElementById("stage-badge").textContent = stageData.badge;
+      document.getElementById("skill-badge").textContent = `מיומנות מפמ"ר: ${qData.skill}`;
+      document.getElementById("q-counter-badge").textContent = `שאלה ${currentQuestionIdx + 1} מתוך ${stageData.questions.length}`;
+      document.getElementById("question-title").textContent = qData.title;
+      document.getElementById("question-hint").textContent = `💡 ${qData.hint}`;
+
+      const feedbackEl = document.getElementById("dream-feedback");
+      if (isSolved) {
+        feedbackEl.textContent = "✔ שאלה זו כבר פוענחה בהצלחה!";
+        feedbackEl.className = "mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-emerald-100 text-emerald-900 border border-emerald-400";
+      } else {
+        feedbackEl.className = "hidden";
+      }
+
+      // בניית 4 כרטיסיות התשובה הגדולות (בסדר אקראי)
+      const optionsContainer = document.getElementById("options-container");
+      optionsContainer.innerHTML = "";
+
+      const optionsToRender = qData.shuffledOptions || qData.options;
+      optionsToRender.forEach((opt) => {
+        const card = document.createElement("button");
+        card.type = "button";
+
+        let baseStyle =
+          "choice-card w-full h-full rounded-2xl p-3 border-2 flex items-center gap-3 text-right cursor-pointer ";
+        if (isSolved && opt.correct) {
+          baseStyle += "bg-emerald-100 border-emerald-600 text-emerald-950";
+        } else if (isSolved) {
+          baseStyle += "bg-white/60 border-slate-300 text-slate-500 opacity-70";
+        } else {
+          baseStyle += "bg-white/95 hover:bg-amber-50 border-indigo-900/30 text-slate-900";
+        }
+
+        card.className = baseStyle;
+        card.innerHTML = `
+          <span class="text-2xl md:text-3xl shrink-0 bg-indigo-50 border border-indigo-200 w-12 h-12 rounded-xl flex items-center justify-center">${opt.icon}</span>
+          <span class="text-sm md:text-lg font-extrabold leading-snug">${opt.text}</span>
+        `;
+
+        card.onclick = () => handleDreamOptionClick(opt, card);
+        optionsContainer.appendChild(card);
+      });
+
+      renderVisualPanel();
+    }
+
+    // טיפול בבחירת תשובה בחלום 1 או 2
+    function handleDreamOptionClick(option, cardEl) {
+      const stageData = DREAM_STAGES[currentStage];
+      const qData = stageData.questions[currentQuestionIdx];
+      const feedbackEl = document.getElementById("dream-feedback");
+
+      if (option.correct) {
+        solvedDreamQuestions.add(qData.id);
+        playSuccessChime();
+        renderDreamQuestion();
+
+        feedbackEl.textContent = "🎉 תשובה מדויקת! כל הכבוד!";
+        feedbackEl.className =
+          "mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-emerald-100 text-emerald-900 border border-emerald-500 animate-pop";
+
+        setTimeout(() => {
+          if (currentQuestionIdx < stageData.questions.length - 1) {
+            currentQuestionIdx++;
+            renderDreamQuestion();
+          } else if (currentStage === 0) {
+            jumpToStage(1);
+          } else if (currentStage === 1) {
+            jumpToStage(2);
+          }
+        }, 1250);
+      } else {
+        playErrorBuzz();
+        cardEl.classList.remove("animate-shake");
+        void cardEl.offsetWidth;
+        cardEl.classList.add("animate-shake", "border-rose-500", "bg-rose-50");
+
+        feedbackEl.textContent = "❌ לא בדיוק... בדקו שוב במגילת הפסוקים או נסו אפשרות אחרת!";
+        feedbackEl.className =
+          "mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-rose-100 text-rose-900 border border-rose-400";
+      }
+    }
+
+    // רינדור טבלת ההשוואה בין שני החלומות
+    function renderComparisonBoard() {
+      const rowsContainer = document.getElementById("comparison-rows");
+      rowsContainer.innerHTML = "";
+
+      document.getElementById("comp-score-badge").textContent =
+        `הושלמו ${solvedComparisons.size} / ${COMPARISON_ROWS.length} קריטריונים`;
+
+      COMPARISON_ROWS.forEach((row) => {
+        const isRowSolved = solvedComparisons.has(row.id);
+        const isRowSelected = !isRowSolved && activeComparisonRowId === row.id;
+
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "grid grid-cols-12 items-center gap-1.5 py-0.5 px-1 text-[11px] md:text-xs";
+
+        // עמודת נושא ההשוואה
+        const labelCol = document.createElement("div");
+        labelCol.className = "col-span-3 font-extrabold text-indigo-950 text-right pr-1 leading-tight";
+        labelCol.textContent = row.label;
+
+        // עמודת חלום 1
+        const d1Col = document.createElement("div");
+        d1Col.className = "col-span-4 flex justify-center";
+        if (row.missingSide === "dream1") {
+          d1Col.appendChild(createComparisonSlotButton(row, isRowSolved, isRowSelected));
+        } else {
+          d1Col.innerHTML = `<div class="w-full bg-amber-50/90 border border-amber-700/20 rounded-xl px-2 py-0.5 text-center text-slate-900 font-medium leading-tight">${row.dream1}</div>`;
+        }
+
+        // עמודת חלום 2
+        const d2Col = document.createElement("div");
+        d2Col.className = "col-span-5 flex justify-center";
+        if (row.missingSide === "dream2") {
+          d2Col.appendChild(createComparisonSlotButton(row, isRowSolved, isRowSelected));
+        } else {
+          d2Col.innerHTML = `<div class="w-full bg-sky-50/90 border border-indigo-700/20 rounded-xl px-2 py-0.5 text-center text-slate-900 font-medium leading-tight">${row.dream2}</div>`;
+        }
+
+        rowDiv.appendChild(labelCol);
+        rowDiv.appendChild(d1Col);
+        rowDiv.appendChild(d2Col);
+        rowsContainer.appendChild(rowDiv);
+      });
+
+      renderComparisonChoicesBar();
+    }
+
+    // יצירת כפתור משבצת להשלמה בטבלת ההשוואה
+    function createComparisonSlotButton(row, isSolved, isSelected) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+
+      if (isSolved) {
+        btn.className =
+          'w-full bg-emerald-100 border-2 border-emerald-600 rounded-xl px-2 py-0.5 text-center text-emerald-950 font-extrabold shadow-xs leading-tight';
+        btn.textContent = `✔ ${row.correctAnswer}`;
+      } else {
+        btn.className = `w-full rounded-xl px-2 py-0.5 text-center font-black cursor-pointer transition border-2 leading-tight ${
+          isSelected
+            ? 'bg-amber-200 border-amber-600 text-slate-950 ring-2 ring-amber-400/60'
+            : 'bg-indigo-100/80 hover:bg-amber-100 border-dashed border-indigo-700/60 text-indigo-950'
+        }`;
+        btn.textContent = isSelected ? '❓ בחרו למטה את התשובה' : '❓ לחצו להשלמה';
+        btn.onclick = () => {
+          activeComparisonRowId = row.id;
+          playTone(480, 0.08, 'sine');
+          renderComparisonBoard();
+        };
+      }
+
+      return btn;
+    }
+
+    // רינדור כפתורי הבחירה בתחתית טבלת ההשוואה (בסדר אקראי)
+    function renderComparisonChoicesBar() {
+      const promptText = document.getElementById('comp-prompt-text');
+      const buttonsWrap = document.getElementById('comp-choices-buttons');
+      buttonsWrap.innerHTML = '';
+
+      if (solvedComparisons.size === COMPARISON_ROWS.length) {
+        buttonsWrap.className = 'flex items-center justify-center w-full';
+        promptText.textContent = '🏆 כל הכבוד! השלמתם את כל טבלת ההשוואה בין שני החלומות!';
+        const celebBtn = document.createElement('button');
+        celebBtn.type = 'button';
+        celebBtn.className =
+          'bg-amber-600 hover:bg-amber-500 text-white px-4 py-1.5 rounded-xl font-black text-xs md:text-sm shadow cursor-pointer';
+        celebBtn.textContent = '🎉 למסך הסיכום והניצחון';
+        celebBtn.onclick = () => document.getElementById('victory-overlay').classList.remove('hidden');
+        buttonsWrap.appendChild(celebBtn);
+        return;
+      }
+
+      buttonsWrap.className = 'grid grid-cols-3 gap-2 w-full';
+
+      const activeRow =
+        COMPARISON_ROWS.find((r) => r.id === activeComparisonRowId && !solvedComparisons.has(r.id)) ||
+        COMPARISON_ROWS.find((r) => !solvedComparisons.has(r.id));
+
+      if (!activeRow) return;
+      activeComparisonRowId = activeRow.id;
+
+      const dreamTitle = activeRow.missingSide === 'dream1' ? 'בחלום 1 (האלומות)' : 'בחלום 2 (השמש והכוכבים)';
+      promptText.textContent = `❓ השלימו את "${activeRow.label}" ${dreamTitle}:`;
+
+      const choicesToRender = activeRow.shuffledChoices || activeRow.choices;
+      choicesToRender.forEach((choiceText) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = choiceText;
+        btn.className =
+          'bg-white hover:bg-indigo-800 hover:text-amber-100 text-indigo-950 border-2 border-indigo-800/35 px-2.5 py-1.5 rounded-xl font-bold text-xs md:text-sm transition cursor-pointer active:scale-95 shadow-xs leading-tight text-center';
+
+        btn.onclick = () => {
+          if (choiceText === activeRow.correctAnswer) {
+            solvedComparisons.add(activeRow.id);
+            playSuccessChime();
+            const nextUnsolved = COMPARISON_ROWS.find((r) => !solvedComparisons.has(r.id));
+            if (nextUnsolved) {
+              activeComparisonRowId = nextUnsolved.id;
+            }
+            renderComparisonBoard();
+            renderVisualPanel();
+
+            if (solvedComparisons.size === COMPARISON_ROWS.length) {
+              setTimeout(() => {
+                document.getElementById('victory-overlay').classList.remove('hidden');
+              }, 750);
+            }
+          } else {
+            playErrorBuzz();
+            btn.classList.remove('animate-shake');
+            void btn.offsetWidth;
+            btn.classList.add('animate-shake', 'bg-rose-100', 'border-rose-500', 'text-rose-900');
+          }
+        };
+
+        buttonsWrap.appendChild(btn);
+      });
+    }
+
+    // רינדור הבמה החזותית בצד שמאל ומד ההתקדמות
+    function renderVisualPanel() {
+      const titleEl = document.getElementById('visual-stage-title');
+      const subEl = document.getElementById('visual-stage-sub');
+      const visualBox = document.getElementById('dream-visual-box');
+      const progText = document.getElementById('aside-progress-text');
+      const progBar = document.getElementById('aside-progress-bar');
+
+      if (currentStage === 0) {
+        const solvedCount = DREAM_STAGES[0].questions.filter((q) => solvedDreamQuestions.has(q.id)).length;
+        const total = DREAM_STAGES[0].questions.length;
+        titleEl.textContent = 'חזיון החלום הראשון';
+        subEl.textContent = 'אלומות האחים משתחווות לאלומת יוסף';
+        progText.textContent = `התקדמות בחלום 1: ${solvedCount} / ${total}`;
+        progBar.style.width = `${(solvedCount / total) * 100}%`;
+
+        const extraGlow = solvedCount >= 1 ? '0.45' : '0.28';
+
+        visualBox.innerHTML = `
+          <svg viewBox="0 0 220 240" class="w-full h-full max-h-[230px]">
+            <!-- הילה זוהרת מאחורי אלומת יוסף -->
+            <circle cx="110" cy="116" r="76" fill="#fbbf24" opacity="${extraGlow}" style="transform-origin: 110px 116px;" class="anim-aura" />
+
+            <!-- קרקע השדה -->
+            <ellipse cx="110" cy="198" rx="98" ry="18" fill="#92400e" opacity="0.85" />
+            <ellipse cx="110" cy="196" rx="82" ry="11" fill="#b45309" opacity="0.7" />
+
+            <!-- אלומת אח ימנית חיצונית משתחווה לעבר יוסף -->
+            <g style="transform-origin: 192px 194px;" class="anim-bow-right">
+              <rect x="185" y="128" width="14" height="66" rx="6" fill="#d97706" stroke="#78350f" stroke-width="2" />
+              <ellipse cx="192" cy="122" rx="10" ry="14" fill="#f59e0b" stroke="#78350f" stroke-width="2" />
+              <line x1="192" y1="110" x2="192" y2="133" stroke="#78350f" stroke-width="1.5" />
+              <rect x="183" y="160" width="18" height="5" rx="2.5" fill="#78350f" />
+            </g>
+
+            <!-- אלומת אח ימנית פנימית משתחווה לעבר יוסף -->
+            <g style="transform-origin: 162px 196px; animation-delay: 0.25s;" class="anim-bow-right">
+              <rect x="154" y="122" width="16" height="74" rx="7" fill="#eab308" stroke="#78350f" stroke-width="2" />
+              <ellipse cx="162" cy="115" rx="11" ry="15" fill="#facc15" stroke="#78350f" stroke-width="2" />
+              <line x1="162" y1="102" x2="162" y2="127" stroke="#78350f" stroke-width="1.5" />
+              <rect x="152" y="158" width="20" height="6" rx="3" fill="#78350f" />
+            </g>
+
+            <!-- אלומת אח שמאלית חיצונית משתחווה לעבר יוסף -->
+            <g style="transform-origin: 28px 194px; animation-delay: 0.15s;" class="anim-bow-left">
+              <rect x="21" y="128" width="14" height="66" rx="6" fill="#d97706" stroke="#78350f" stroke-width="2" />
+              <ellipse cx="28" cy="122" rx="10" ry="14" fill="#f59e0b" stroke="#78350f" stroke-width="2" />
+              <line x1="28" y1="110" x2="28" y2="133" stroke="#78350f" stroke-width="1.5" />
+              <rect x="19" y="160" width="18" height="5" rx="2.5" fill="#78350f" />
+            </g>
+
+            <!-- אלומת אח שמאלית פנימית משתחווה לעבר יוסף -->
+            <g style="transform-origin: 58px 196px; animation-delay: 0.4s;" class="anim-bow-left">
+              <rect x="50" y="122" width="16" height="74" rx="7" fill="#eab308" stroke="#78350f" stroke-width="2" />
+              <ellipse cx="58" cy="115" rx="11" ry="15" fill="#facc15" stroke="#78350f" stroke-width="2" />
+              <line x1="58" y1="102" x2="58" y2="127" stroke="#78350f" stroke-width="1.5" />
+              <rect x="48" y="158" width="20" height="6" rx="3" fill="#78350f" />
+            </g>
+
+            <!-- אלומת יוסף הזקופה והמלכותית במרכז -->
+            <g class="animate-float">
+              <!-- גבעולי האלומה -->
+              <rect x="97" y="82" width="26" height="114" rx="10" fill="#fbbf24" stroke="#78350f" stroke-width="2.5" />
+              <!-- שיבולת זהב גדולה -->
+              <ellipse cx="110" cy="72" rx="19" ry="24" fill="#fef08a" stroke="#b45309" stroke-width="2.5" />
+              <line x1="110" y1="52" x2="110" y2="92" stroke="#b45309" stroke-width="2" />
+              <line x1="101" y1="64" x2="110" y2="73" stroke="#b45309" stroke-width="2" />
+              <line x1="119" y1="64" x2="110" y2="73" stroke="#b45309" stroke-width="2" />
+              <line x1="101" y1="77" x2="110" y2="85" stroke="#b45309" stroke-width="2" />
+              <line x1="119" y1="77" x2="110" y2="85" stroke="#b45309" stroke-width="2" />
+              <!-- סרט מלכותי כחול-זהב על אלומת יוסף -->
+              <rect x="94" y="132" width="32" height="11" rx="4" fill="#1d4ed8" stroke="#fef08a" stroke-width="1.5" />
+              <!-- כתר קטן מעל אלומת יוסף -->
+              <polygon points="99,43 103,34 110,40 117,34 121,43" fill="#fde047" stroke="#92400e" stroke-width="1.5" />
+              <!-- תווית ברורה: אלומת יוסף -->
+              <rect x="64" y="8" width="92" height="22" rx="11" fill="#fef08a" stroke="#92400e" stroke-width="2" />
+              <text x="110" y="23" text-anchor="middle" fill="#451a03" font-size="12" font-weight="900">אלומת יוסף</text>
+            </g>
+
+            <!-- תווית ברורה בתחתית: אלומות האחים -->
+            <rect x="52" y="212" width="116" height="21" rx="10.5" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5" />
+            <text x="110" y="226" text-anchor="middle" fill="#fde68a" font-size="11.5" font-weight="800">אלומות האחים משתחווות</text>
+          </svg>
+        `;
+      } else if (currentStage === 1) {
+        const solvedCount = DREAM_STAGES[1].questions.filter((q) => solvedDreamQuestions.has(q.id)).length;
+        const total = DREAM_STAGES[1].questions.length;
+        titleEl.textContent = 'חזיון החלום השני';
+        subEl.textContent = 'השמש, הירח ו-11 הכוכבים משתחווים ליוסף';
+        progText.textContent = `התקדמות בחלום 2: ${solvedCount} / ${total}`;
+        progBar.style.width = `${(solvedCount / total) * 100}%`;
+
+        visualBox.innerHTML = `
+          <svg viewBox="0 0 220 240" class="w-full h-full max-h-[230px]">
+            <!-- מסלול קשת הכוכבים -->
+            <path d="M 24,152 A 86,82 0 0,1 196,152" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.55" />
+
+            <!-- השמש (אביו) - בצד ימין למעלה, קדה לעבר יוסף -->
+            <g style="transform-origin: 176px 38px;" class="anim-bow-sun">
+              <g style="transform-origin: 176px 38px;" class="anim-spin-slow">
+                <line x1="176" y1="12" x2="176" y2="64" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="150" y1="38" x2="202" y2="38" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="158" y1="20" x2="194" y2="56" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+                <line x1="194" y1="20" x2="158" y2="56" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+              </g>
+              <circle cx="176" cy="38" r="15" fill="#fbbf24" stroke="#f59e0b" stroke-width="2.5" />
+              <rect x="137" y="64" width="76" height="18" rx="9" fill="#451a03" stroke="#fbbf24" stroke-width="1.2" />
+              <text x="175" y="76.5" text-anchor="middle" fill="#fde68a" font-size="10.5" font-weight="800">השמש (אביו)</text>
+            </g>
+
+            <!-- הירח (אמו) - בצד שמאל למעלה, קד לעבר יוסף -->
+            <g style="transform-origin: 44px 38px;" class="anim-bow-moon">
+              <path d="M38,20 A18,18 0 1,0 58,48 A14,14 0 1,1 38,20 Z" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="2" />
+              <rect x="8" y="64" width="74" height="18" rx="9" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="1.2" />
+              <text x="45" y="76.5" text-anchor="middle" fill="#e0f2fe" font-size="10.5" font-weight="800">הירח (אמו)</text>
+            </g>
+
+            <!-- 11 כוכבים (אחיו) מסודרים בקשת סביב יוסף ומנצנצים בתנועה -->
+            <g fill="#fde047" stroke="#ca8a04" stroke-width="0.8">
+              <polygon points="24,144 26,149 31,149 27,152 28,157 24,154 20,157 21,152 17,149 22,149" style="transform-origin: 24px 150px; animation-delay: 0.0s;" class="anim-star-bow" />
+              <polygon points="31,122 33,127 38,127 34,130 35,135 31,132 27,135 28,130 24,127 29,127" style="transform-origin: 31px 128px; animation-delay: 0.18s;" class="anim-star-bow" />
+              <polygon points="45,103 47,108 52,108 48,111 49,116 45,113 41,116 42,111 38,108 43,108" style="transform-origin: 45px 109px; animation-delay: 0.36s;" class="anim-star-bow" />
+              <polygon points="65,89 67,94 72,94 68,97 69,102 65,99 61,102 62,97 58,94 63,94" style="transform-origin: 65px 95px; animation-delay: 0.54s;" class="anim-star-bow" />
+              <polygon points="87,80 89,85 94,85 90,88 91,93 87,90 83,93 84,88 80,85 85,85" style="transform-origin: 87px 86px; animation-delay: 0.72s;" class="anim-star-bow" />
+              <polygon points="110,76 112,81 117,81 113,84 114,89 110,86 106,89 107,84 103,81 108,81" style="transform-origin: 110px 82px; animation-delay: 0.9s;" class="anim-star-bow" />
+              <polygon points="133,80 135,85 140,85 136,88 137,93 133,90 129,93 130,88 126,85 131,85" style="transform-origin: 133px 86px; animation-delay: 1.08s;" class="anim-star-bow" />
+              <polygon points="155,89 157,94 162,94 158,97 159,102 155,99 151,102 152,97 148,94 153,94" style="transform-origin: 155px 95px; animation-delay: 1.26s;" class="anim-star-bow" />
+              <polygon points="175,103 177,108 182,108 178,111 179,116 175,113 171,116 172,111 168,108 173,108" style="transform-origin: 175px 109px; animation-delay: 1.44s;" class="anim-star-bow" />
+              <polygon points="189,122 191,127 196,127 192,130 193,135 189,132 185,135 186,130 182,127 187,127" style="transform-origin: 189px 128px; animation-delay: 1.62s;" class="anim-star-bow" />
+              <polygon points="196,144 198,149 203,149 199,152 200,157 196,154 192,157 193,152 189,149 194,149" style="transform-origin: 196px 150px; animation-delay: 1.8s;" class="anim-star-bow" />
+            </g>
+
+            <!-- דמות יוסף בכתונת הפסים במרכז החלום -->
+            <g class="animate-float">
+              <circle cx="110" cy="148" r="36" fill="#fde047" opacity="0.24" style="transform-origin: 110px 148px;" class="anim-aura" />
+              <!-- ראש וכתר קטן -->
+              <circle cx="110" cy="124" r="12" fill="#fde68a" stroke="#92400e" stroke-width="2" />
+              <polygon points="102,113 105,106 110,111 115,106 118,113" fill="#fbbf24" stroke="#92400e" stroke-width="1.3" />
+              <!-- גוף בכתונת פסים צבעונית -->
+              <path d="M94,139 Q110,135 126,139 L130,174 L90,174 Z" fill="#2563eb" stroke="#1e3a8a" stroke-width="2" />
+              <line x1="93" y1="147" x2="127" y2="147" stroke="#fbbf24" stroke-width="3.5" />
+              <line x1="92" y1="156" x2="128" y2="156" stroke="#ef4444" stroke-width="3.5" />
+              <line x1="91" y1="165" x2="129" y2="165" stroke="#10b981" stroke-width="3.5" />
+              <!-- תווית ברורה: יוסף -->
+              <rect x="82" y="177" width="56" height="20" rx="10" fill="#fef08a" stroke="#92400e" stroke-width="2" />
+              <text x="110" y="191" text-anchor="middle" fill="#451a03" font-size="12" font-weight="900">יוסף</text>
+            </g>
+
+            <!-- תווית ברורה בתחתית: 11 הכוכבים (אחיו) -->
+            <rect x="46" y="212" width="128" height="21" rx="10.5" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="110" y="226" text-anchor="middle" fill="#bae6fd" font-size="11.5" font-weight="800">11 הכוכבים (אחיו)</text>
+          </svg>
+        `;
+      } else {
+        const solvedCount = solvedComparisons.size;
+        const total = COMPARISON_ROWS.length;
+        titleEl.textContent = 'מאזני החלומות';
+        subEl.textContent = 'השוואה בין שני החלומות של יוסף';
+        progText.textContent = `השוואה: ${solvedCount} / ${total}`;
+        progBar.style.width = `${(solvedCount / total) * 100}%`;
+
+        visualBox.innerHTML = `
+          <svg viewBox="0 0 220 240" class="w-full h-full max-h-[230px]">
+            <!-- הילה זוהרת מאחורי המאזניים -->
+            <circle cx="110" cy="118" r="78" fill="#38bdf8" opacity="0.2" style="transform-origin: 110px 118px;" class="anim-aura" />
+
+            <!-- בסיס ועמוד המאזניים -->
+            <rect x="104" y="42" width="12" height="148" rx="6" fill="#fbbf24" stroke="#b45309" stroke-width="2" />
+            <rect x="58" y="186" width="104" height="15" rx="7.5" fill="#d97706" stroke="#78350f" stroke-width="2" />
+            <!-- כתר בראש המאזניים -->
+            <polygon points="98,38 103,26 110,33 117,26 122,38" fill="#fde047" stroke="#92400e" stroke-width="1.8" />
+
+            <!-- קורת המאזניים המתנדנדת בין שני החלומות -->
+            <g style="transform-origin: 110px 76px;" class="anim-beam">
+              <line x1="42" y1="76" x2="178" y2="76" stroke="#fcd34d" stroke-width="6" stroke-linecap="round" />
+              <circle cx="110" cy="76" r="11" fill="#1d4ed8" stroke="#fef08a" stroke-width="3" />
+
+              <!-- כף ימין: חלום 1 (האלומות) -->
+              <g transform="translate(172, 76)">
+                <g style="transform-origin: 0px 0px;" class="anim-pan">
+                  <line x1="0" y1="0" x2="-22" y2="44" stroke="#fde68a" stroke-width="2" />
+                  <line x1="0" y1="0" x2="22" y2="44" stroke="#fde68a" stroke-width="2" />
+                  <path d="M-30,44 Q0,68 30,44 Z" fill="#f59e0b" stroke="#b45309" stroke-width="1.8" />
+                  <!-- אלומת זהב על הכף -->
+                  <rect x="-6" y="14" width="12" height="30" rx="4" fill="#fde047" stroke="#92400e" stroke-width="1.5" />
+                  <ellipse cx="0" cy="11" rx="8" ry="10" fill="#fef08a" stroke="#92400e" stroke-width="1.5" />
+                  <rect x="-32" y="64" width="64" height="19" rx="9.5" fill="#451a03" stroke="#fbbf24" stroke-width="1.3" />
+                  <text x="0" y="77" text-anchor="middle" fill="#fde68a" font-size="10.5" font-weight="900">חלום 1: אלומות</text>
+                </g>
+              </g>
+
+              <!-- כף שמאל: חלום 2 (השמש, הירח והכוכבים) -->
+              <g transform="translate(48, 76)">
+                <g style="transform-origin: 0px 0px;" class="anim-pan">
+                  <line x1="0" y1="0" x2="-22" y2="44" stroke="#bae6fd" stroke-width="2" />
+                  <line x1="0" y1="0" x2="22" y2="44" stroke="#bae6fd" stroke-width="2" />
+                  <path d="M-30,44 Q0,68 30,44 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.8" />
+                  <!-- שמש וכוכבים על הכף -->
+                  <circle cx="-6" cy="26" r="10" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5" />
+                  <polygon points="12,14 14,19 19,19 15,22 16,27 12,24 8,27 9,22 5,19 10,19" fill="#fef08a" />
+                  <rect x="-34" y="64" width="68" height="19" rx="9.5" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="1.3" />
+                  <text x="0" y="77" text-anchor="middle" fill="#e0f2fe" font-size="10.5" font-weight="900">חלום 2: שמיים</text>
+                </g>
+              </g>
+            </g>
+
+            <!-- תווית תחתונה ברורה -->
+            <rect x="44" y="212" width="132" height="21" rx="10.5" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5" />
+            <text x="110" y="226" text-anchor="middle" fill="#fef08a" font-size="11.5" font-weight="800">יוסף במרכז שני החלומות</text>
+          </svg>
+        `;
+      }
+    }
+
+    // ניווט קדימה ואחורה מהסרגל התחתון
+    function nextStep() {
+      if (currentStage === 0 || currentStage === 1) {
+        const totalQ = DREAM_STAGES[currentStage].questions.length;
+        if (currentQuestionIdx < totalQ - 1) {
+          currentQuestionIdx++;
+          renderDreamQuestion();
+        } else {
+          jumpToStage(currentStage + 1);
+        }
+      } else {
+        jumpToStage(0);
+      }
+    }
+
+    function prevStep() {
+      if (currentStage === 0 || currentStage === 1) {
+        if (currentQuestionIdx > 0) {
+          currentQuestionIdx--;
+          renderDreamQuestion();
+        } else if (currentStage === 1) {
+          jumpToStage(0);
+          currentQuestionIdx = DREAM_STAGES[0].questions.length - 1;
+          renderDreamQuestion();
+        }
+      } else {
+        jumpToStage(1);
+        currentQuestionIdx = DREAM_STAGES[1].questions.length - 1;
+        renderDreamQuestion();
+      }
+    }
+
+    // פתיחה וסגירה של מגילת הפסוקים
+    function toggleVersesModal(show) {
+      const modal = document.getElementById('verses-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+        playTone(500, 0.08, 'sine');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    // פתיחה וסגירה של מדריך המורה
+    function toggleTeacherModal(show) {
+      const modal = document.getElementById('teacher-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    // איפוס מלא של המשחק
+    function restartGame() {
+      solvedDreamQuestions.clear();
+      solvedComparisons.clear();
+      activeComparisonRowId = 'place';
+      randomizeAllChoices();
+      document.getElementById('victory-overlay').classList.add('hidden');
+      jumpToStage(0);
+    }
+
+    // הפעלה מיידית עם טעינת הדף
+    function initGame() {
+      randomizeAllChoices();
+      jumpToStage(0);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGame);
+    } else {
+      initGame();
+    }
+  </script>
+</body>
+</html>
