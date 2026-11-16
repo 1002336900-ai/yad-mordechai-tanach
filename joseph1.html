@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>מפענחי כתונת הפסים - בראשית ל"ז א'-ד'</title>
+  <!-- טעינת Tailwind CSS לעיצוב רספונסיבי ומדויק -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- טעינת גופנים עבריים קריאים ומקראיים -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* הגדרות בסיס למסך מלא ומניעת גלילה בחדר אימרסיבי */
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #181310; /* מסגרת כהה להבלטת הבמה המוקרנת */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    /* שמירה קשיחה על יחס מסך 16:9 ממורכז לחדר אימרסיבי */
+    #immersive-stage {
+      width: min(100vw, calc(100vh * (16 / 9)));
+      height: min(100vh, calc(100vw * (9 / 16)));
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 35%, #fdf6e9 0%, #f3e4c8 65%, #e2cba3 100%);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
+      border: 4px solid #8c5a2b;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .font-bible {
+      font-family: 'Frank Ruhl Libre', serif;
+    }
+
+    /* אנימציות למשוב חזותי */
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      70% { transform: scale(1.06); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.55); }
+      50% { box-shadow: 0 0 0 10px rgba(217, 119, 6, 0); }
+    }
+
+    .animate-pop {
+      animation: popIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    .active-blank {
+      animation: pulseGlow 1.8s infinite;
+      border-color: #d97706 !important;
+      background-color: #fffbeb !important;
+    }
+
+    /* אריחי האותיות מותאמים ללחיצה פיזית של תלמידי יסודי */
+    .letter-tile {
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
+      box-shadow: 0 4px 0 #78350f;
+    }
+
+    .letter-tile:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #78350f;
+    }
+
+    /* פסי צבע של כתונת הפסים */
+    .tunic-stripe {
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    /* סרגל גלילה עדין למודאל המורה */
+    .custom-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f5ebd6;
+      border-radius: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #b47b44;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- הבמה המרכזית ביחס 16:9 קבוע -->
+  <div id="immersive-stage">
+
+    <!-- רצועה עליונה (אזור תצוגה ומידע - ללא כפתורים חיוניים לגובה נמוך) -->
+    <header class="w-full px-6 pt-3 pb-2 flex items-center justify-between border-b-2 border-amber-800/20 bg-amber-900/5">
+      <div class="flex items-center gap-3">
+        <div class="bg-amber-700 text-amber-50 px-3 py-1 rounded-xl font-bold text-sm md:text-base shadow">
+          בראשית פרק ל"ז • פסוקים א'–ד'
+        </div>
+        <h1 class="text-lg md:text-2xl font-extrabold text-amber-950 tracking-tight">
+          אורגי כתונת הפסים
+        </h1>
+      </div>
+
+      <!-- מד התקדמות וכפתור מדריך למורה -->
+      <div class="flex items-center gap-3">
+        <div class="bg-white/80 border border-amber-700/30 px-3 py-1 rounded-xl flex items-center gap-2 shadow-sm">
+          <span class="text-xs md:text-sm font-bold text-amber-900">משפט</span>
+          <span id="progress-counter" class="text-base md:text-lg font-extrabold text-amber-700">1 / 9</span>
+        </div>
+
+        <button
+          onclick="toggleTeacherModal(true)"
+          class="bg-amber-900 hover:bg-amber-800 text-amber-50 px-3 py-1.5 rounded-xl text-xs md:text-sm font-bold shadow transition cursor-pointer flex items-center gap-1.5"
+          title="צפייה במאגר המילים ובמאגר המשפטים המלא"
+        >
+          <span>📋 מדריך למורה ומאגר המשפטים</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- אזור המשחק המרכזי (ממוקם בגובה ארגונומי נגיש לתלמידי כיתות ד'-ו') -->
+    <main class="flex-1 w-full px-6 py-2 flex items-center justify-between gap-5 overflow-hidden">
+
+      <!-- צד ימין (80%): אזור החידה, קווי ההשלמה והמקלדת -->
+      <section class="w-4/5 h-full flex flex-col justify-between py-1">
+
+        <!-- כרטיס המשפט להשלמה -->
+        <div id="question-card" class="bg-white/95 border-2 border-amber-800/30 rounded-2xl p-4 md:p-5 shadow-md flex flex-col justify-center min-h-[34%] relative">
+          <!-- תגית מיומנות מפמ"ר -->
+          <div class="flex items-center justify-between mb-2">
+            <span id="skill-badge" class="bg-blue-100 text-blue-900 border border-blue-300 px-2.5 py-0.5 rounded-lg text-xs font-bold">
+              מיומנות מפמ"ר: איתור מידע (פשט)
+            </span>
+            <span id="verse-ref" class="text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-lg">
+              מבוסס על פסוק א'
+            </span>
+          </div>
+
+          <!-- טקסט המשפט עם קווי ההשלמה -->
+          <div id="sentence-container" class="text-xl md:text-2xl lg:text-3xl font-bold text-stone-800 leading-relaxed flex flex-wrap items-center gap-y-3 gap-x-2">
+            <!-- מוזרק דינמית על ידי JS -->
+          </div>
+
+          <!-- הודעת משוב מובנית (במקום alert) -->
+          <div id="feedback-banner" class="hidden mt-2 px-3 py-1.5 rounded-xl text-sm md:text-base font-bold text-center transition-all"></div>
+        </div>
+
+        <!-- סרגל פעולות עזר בגובה נגיש לתלמידים -->
+        <div class="flex items-center justify-between gap-2 my-1">
+          <div class="flex items-center gap-2">
+            <button
+              onclick="toggleWordBankDrawer(true)"
+              class="bg-purple-700 hover:bg-purple-600 text-white px-3.5 py-2 rounded-xl font-bold text-sm md:text-base shadow cursor-pointer flex items-center gap-1.5 transition active:scale-95"
+            >
+              <span>🧺 מאגר מילים</span>
+            </button>
+
+            <button
+              onclick="toggleVersesDrawer(true)"
+              class="bg-emerald-700 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl font-bold text-sm md:text-base shadow cursor-pointer flex items-center gap-1.5 transition active:scale-95"
+            >
+              <span>📜 מגילת פסוקים</span>
+            </button>
+
+            <button
+              onclick="giveHintLetter()"
+              class="bg-amber-600 hover:bg-amber-500 text-white px-3.5 py-2 rounded-xl font-bold text-sm md:text-base shadow cursor-pointer flex items-center gap-1.5 transition active:scale-95"
+            >
+              <span>💡 רמז אות</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              onclick="backspaceLetter()"
+              class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl font-bold text-sm md:text-base shadow cursor-pointer transition active:scale-95"
+            >
+              ⌫ מחק אות
+            </button>
+
+            <button
+              onclick="clearCurrentBlank()"
+              class="bg-stone-600 hover:bg-stone-500 text-white px-3 py-2 rounded-xl font-bold text-sm md:text-base shadow cursor-pointer transition active:scale-95"
+            >
+              נקה מילה
+            </button>
+
+            <button
+              id="check-btn"
+              onclick="checkAnswer()"
+              class="bg-blue-700 hover:bg-blue-600 text-white px-5 py-2 rounded-xl font-extrabold text-sm md:text-base shadow-md cursor-pointer transition active:scale-95"
+            >
+              ✔ בדוק תשובה
+            </button>
+          </div>
+        </div>
+
+        <!-- מקלדת אריחים עברית גדולה (א'-ב' + אותיות סופיות) ממוקמת בחלק התחתון-מרכזי הנגיש לילדים -->
+        <div id="hebrew-keyboard" class="bg-amber-950/10 border-2 border-amber-900/20 rounded-2xl p-2.5 flex flex-col gap-2">
+          <!-- שורות האותיות מוזרקות כאן -->
+        </div>
+
+      </section>
+
+      <!-- צד שמאל (20%): כתונת הפסים הנארגת בהדרגה -->
+      <aside class="w-1/5 h-full bg-white/80 border-2 border-amber-800/30 rounded-2xl p-3 flex flex-col items-center justify-between shadow-inner">
+        <div class="text-center">
+          <h2 class="text-sm md:text-base font-extrabold text-amber-950">כתונת הפסים</h2>
+          <p class="text-[11px] md:text-xs text-amber-800">כל תשובה אורגת פס צבעוני!</p>
+        </div>
+
+        <!-- איור SVG דינמי של כתונת הפסים -->
+        <div class="w-full flex-1 flex items-center justify-center my-1">
+          <svg viewBox="0 0 200 240" class="w-full h-full max-h-[260px] drop-shadow-md">
+            <defs>
+              <clipPath id="tunic-clip">
+                <!-- גזרת כתונת עם שרוולים -->
+                <path d="M70,15 L130,15 L185,55 L165,90 L140,75 L140,225 L60,225 L60,75 L35,90 L15,55 Z" />
+              </clipPath>
+            </defs>
+
+            <!-- רקע בד גולמי לפני האריגה -->
+            <path d="M70,15 L130,15 L185,55 L165,90 L140,75 L140,225 L60,225 L60,75 L35,90 L15,55 Z" fill="#e7dcc8" stroke="#78350f" stroke-width="4" />
+
+            <!-- 9 פסי צבע שנחשפים עם כל משפט שנפתר -->
+            <g clip-path="url(#tunic-clip)" id="tunic-stripes-group">
+              <rect id="stripe-0" x="0" y="15" width="200" height="24" fill="#dc2626" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-1" x="0" y="38.33" width="200" height="24" fill="#d97706" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-2" x="0" y="61.66" width="200" height="24" fill="#2563eb" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-3" x="0" y="85" width="200" height="24" fill="#059669" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-4" x="0" y="108.33" width="200" height="24" fill="#7c3aed" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-5" x="0" y="131.66" width="200" height="24" fill="#ea580c" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-6" x="0" y="155" width="200" height="24" fill="#0284c7" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-7" x="0" y="178.33" width="200" height="24" fill="#be123c" opacity="0.12" class="tunic-stripe" />
+              <rect id="stripe-8" x="0" y="201.66" width="200" height="24" fill="#0d9488" opacity="0.12" class="tunic-stripe" />
+            </g>
+
+            <!-- קווי מתאר וצווארון רקום -->
+            <path d="M70,15 L130,15 L185,55 L165,90 L140,75 L140,225 L60,225 L60,75 L35,90 L15,55 Z" fill="none" stroke="#78350f" stroke-width="4" stroke-linejoin="round" />
+            <path d="M82,15 Q100,38 118,15" fill="#fef3c7" stroke="#78350f" stroke-width="3" />
+          </svg>
+        </div>
+
+        <div class="w-full bg-amber-100 rounded-xl p-2 text-center border border-amber-300">
+          <span id="woven-status" class="text-xs md:text-sm font-extrabold text-amber-900">
+            נארגו 0 מתוך 9 פסים
+          </span>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- רצועה תחתונה דקה להנחיית תפעול -->
+    <footer class="w-full px-6 py-1.5 bg-amber-950/10 border-t border-amber-900/15 flex items-center justify-between text-xs text-amber-950 font-medium">
+      <span>💡 טיפ לתלמידים: לחצו על האותיות שעל הקיר כדי להרכיב מילה אחת מעל הקו.</span>
+      <div class="flex items-center gap-3">
+        <button onclick="prevQuestion()" class="hover:underline font-bold cursor-pointer">◀ למשפט הקודם</button>
+        <span>|</span>
+        <button onclick="nextQuestion()" class="hover:underline font-bold cursor-pointer">למשפט הבא ▶</button>
+      </div>
+    </footer>
+
+    <!-- מגירת פסוקי הפרק (בראשית ל"ז א'-ד') לביסוס מהכתוב -->
+    <div id="verses-drawer" class="hidden absolute inset-0 bg-stone-950/70 backdrop-blur-xs z-30 flex items-center justify-center p-6">
+      <div class="bg-[#fdf8ee] border-4 border-amber-800 rounded-3xl max-w-4xl w-full p-6 shadow-2xl animate-pop">
+        <div class="flex items-center justify-between border-b-2 border-amber-800/20 pb-3 mb-4">
+          <h3 class="text-2xl font-extrabold text-amber-950 flex items-center gap-2">
+            <span>📜</span> ספר בראשית, פרק ל"ז, פסוקים א'–ד'
+          </h3>
+          <button onclick="toggleVersesDrawer(false)" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl font-bold text-base cursor-pointer">
+            ✕ סגור מגילה
+          </button>
+        </div>
+
+        <div class="font-bible text-xl md:text-2xl leading-loose text-stone-900 space-y-3 bg-amber-50/80 p-5 rounded-2xl border border-amber-300">
+          <p><strong class="text-amber-800">(א)</strong> וַיֵּשֶׁב יַעֲקֹב בְּאֶרֶץ מְגוּרֵי אָבִיו, בְּאֶרֶץ כְּנָעַן.</p>
+          <p><strong class="text-amber-800">(ב)</strong> אֵלֶּה תֹּלְדוֹת יַעֲקֹב: יוֹסֵף בֶּן-שְׁבַע-עֶשְׂרֵה שָׁנָה הָיָה רֹעֶה אֶת-אֶחָיו בַּצֹּאן, וְהוּא נַעַר אֶת-בְּנֵי בִלְהָה וְאֶת-בְּנֵי זִלְפָּה נְשֵׁי אָבִיו; וַיָּבֵא יוֹסֵף אֶת-דִּבָּתָם רָעָה אֶל-אֲבִיהֶם.</p>
+          <p><strong class="text-amber-800">(ג)</strong> וְיִשְׂרָאֵל אָהַב אֶת-יוֹסֵף מִכָּל-בָּנָיו כִּי-בֶן-זְקֻנִים הוּא לוֹ; וְעָשָׂה לוֹ כְּתֹנֶת פַּסִּים.</p>
+          <p><strong class="text-amber-800">(ד)</strong> וַיִּרְאוּ אֶחָיו כִּי-אֹתוֹ אָהַב אֲבִיהֶם מִכָּל-אֶחָיו וַיִּשְׂנְאוּ אֹתוֹ; וְלֹא יָכְלוּ דַּבְּרוֹ לְשָׁלֹם.</p>
+        </div>
+
+        <div class="mt-4 text-center">
+          <button onclick="toggleVersesDrawer(false)" class="bg-emerald-700 hover:bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold text-lg cursor-pointer shadow">
+            מצאתי את המילה! חזרה למשחק
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- מגירת מאגר המילים לעזרת התלמידים -->
+    <div id="wordbank-drawer" class="hidden absolute inset-0 bg-stone-950/70 backdrop-blur-xs z-30 flex items-center justify-center p-6">
+      <div class="bg-[#fdf8ee] border-4 border-purple-800 rounded-3xl max-w-4xl w-full p-6 shadow-2xl animate-pop">
+        <div class="flex items-center justify-between border-b-2 border-purple-800/20 pb-3 mb-4">
+          <div>
+            <h3 class="text-2xl font-extrabold text-purple-950 flex items-center gap-2">
+              <span>🧺</span> מאגר מילים לעזרה
+            </h3>
+            <p class="text-sm text-stone-600 font-medium">בחרו את המילה המתאימה למשפט, ולאחר מכן הרכיבו אותה בעזרת אריחי האותיות שעל הקיר</p>
+          </div>
+          <button onclick="toggleWordBankDrawer(false)" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl font-bold text-base cursor-pointer">
+            ✕ סגור מאגר
+          </button>
+        </div>
+
+        <div id="student-wordbank-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-purple-50/80 p-5 rounded-2xl border border-purple-300">
+          <!-- כרטיסיות המילים מוזרקות דינמית -->
+        </div>
+
+        <p id="wordbank-tip" class="mt-3 text-center text-sm font-bold text-purple-900 min-h-[22px]"></p>
+
+        <div class="mt-3 text-center">
+          <button onclick="toggleWordBankDrawer(false)" class="bg-purple-700 hover:bg-purple-600 text-white px-6 py-2.5 rounded-xl font-bold text-lg cursor-pointer shadow">
+            חזרה להרכבת המילה
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- מסך סיום חגיגי -->
+    <div id="victory-overlay" class="hidden absolute inset-0 bg-stone-950/80 backdrop-blur-xs z-40 flex items-center justify-center p-6">
+      <div class="bg-[#fdf8ee] border-4 border-amber-600 rounded-3xl max-w-2xl w-full p-8 text-center shadow-2xl animate-pop">
+        <div class="text-5xl mb-3">👑✨👘</div>
+        <h2 class="text-3xl font-extrabold text-amber-950 mb-2">כל הכבוד! השלמתם את אריגת כתונת הפסים!</h2>
+        <p class="text-lg text-stone-700 mb-6">
+          פענחתם בהצלחה את כל 9 המשפטים מתוך בראשית פרק ל"ז פסוקים א'–ד' ברמת מבחן מפמ"ר!
+        </p>
+        <button onclick="restartGame()" class="bg-amber-600 hover:bg-amber-500 text-white px-8 py-3 rounded-2xl font-extrabold text-xl shadow-lg cursor-pointer transition active:scale-95">
+          🔄 שחקו שוב מהתחלה
+        </button>
+      </div>
+    </div>
+
+    <!-- מודאל מדריך למורה + מאגר המילים ומאגר המשפטים -->
+    <div id="teacher-modal" class="hidden absolute inset-0 bg-stone-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-5">
+      <div class="bg-white border-4 border-amber-900 rounded-3xl w-full max-w-5xl h-[88%] flex flex-col p-6 shadow-2xl">
+        <div class="flex items-center justify-between border-b-2 border-stone-200 pb-3 mb-3">
+          <div>
+            <h3 class="text-2xl font-extrabold text-amber-950">מאגר המשפטים ומאגר המילים (בראשית ל"ז א'–ד')</h3>
+            <p class="text-sm text-stone-600">מותאם ליחס 16:9, נגישות גובה לתלמידי ד'–ו' ורמת הבנה של מבחני מפמ"ר</p>
+          </div>
+          <button onclick="toggleTeacherModal(false)" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl font-bold cursor-pointer">
+            ✕ חזרה למשחק
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll pl-2 space-y-5 text-right">
+          <!-- מאגר המילים לתלמידים -->
+          <div class="bg-purple-50 border border-purple-300 rounded-2xl p-4">
+            <h4 class="font-extrabold text-lg text-purple-950 mb-2">🧺 מאגר מילים לעזרת התלמידים:</h4>
+            <div id="teacher-wordbank-list" class="flex flex-wrap gap-2">
+              <!-- מוזרק אוטומטית -->
+            </div>
+          </div>
+
+          <!-- רשימת כל 10 המשפטים -->
+          <div>
+            <h4 class="font-extrabold text-lg text-amber-950 mb-2">📝 מאגר המשפטים המלא (מילה אחת מעל כל קו):</h4>
+            <div id="teacher-sentences-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- מוזרק אוטומטית מתוך מערך השאלות -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /**
+     * מאגר השאלות: 9 משפטים מתוך בראשית ל"ז א'-ד' ברמת מבחן מפמ"ר
+     * כל משפט מחולק לחלקי טקסט (parts) ולמילות יעד (answers) - מילה אחת מעל כל קו.
+     */
+    const QUESTIONS = [
+      {
+        id: 1,
+        source: "משפט #1",
+        verse: "פסוק א'",
+        skill: "איתור מידע גלוי (פשט)",
+        parts: ["יעקב ישב בארץ שנקראת ", "."],
+        answers: ["כנען"]
+      },
+      {
+        id: 2,
+        source: "משפט #2",
+        verse: "פסוק ב'",
+        skill: "הבנת רצף האירועים",
+        parts: ["יוסף רעה את הצאן עם אחיו, וכשחזר הוא סיפר לאביו דברים ", " על אחיו."],
+        answers: ["רעים"]
+      },
+      {
+        id: 3,
+        source: "משפט #3",
+        verse: "פסוק ג'",
+        skill: "קשרי סיבה ותוצאה",
+        parts: ["יעקב אהב את יוסף יותר מכל יתר בניו כי הוא היה בן ה", " שלו."],
+        answers: ["זקונים"]
+      },
+      {
+        id: 4,
+        source: "משפט #4",
+        verse: "פסוק ג'",
+        skill: "זיהוי פעולות הדמויות",
+        parts: ["יעקב ביטא את אהבתו זו בכך שהכין לבנו ", " ", "."],
+        answers: ["כתונת", "פסים"]
+      },
+      {
+        id: 5,
+        source: "משפט #5",
+        verse: "פסוק ד'",
+        skill: "הבנת רגשות וסיבה-תוצאה",
+        parts: ["בעקבות אהבת יעקב, האחים הרגישו ", " כלפי יוסף ולא היו מסוגלים לדבר עימו."],
+        answers: ["שנאה"]
+      },
+      {
+        id: 6,
+        source: "רמת מפמ\"ר",
+        verse: "פסוק ב'",
+        skill: "איתור פרטים מזהים (גיל)",
+        parts: ["בתחילת הסיפור, יוסף היה נער צעיר בן ", " עשרה שנה."],
+        answers: ["שבע"]
+      },
+      {
+        id: 7,
+        source: "רמת מפמ\"ר",
+        verse: "פסוק ב'",
+        skill: "אוצר מילים מקראי",
+        parts: ["המילה המקראית \"", "\" פירושה לשון הרע או רכילות שסיפר יוסף לאביו על אחיו."],
+        answers: ["דיבה"]
+      },
+      {
+        id: 8,
+        source: "רמת מפמ\"ר",
+        verse: "פסוק ג'",
+        skill: "זיהוי שמות נרדפים לדמות",
+        parts: ["בפסוק ג' יעקב אבינו נקרא בשמו הנוסף והוא ", "."],
+        answers: ["ישראל"]
+      },
+      {
+        id: 9,
+        source: "רמת מפמ\"ר",
+        verse: "פסוק ג'",
+        skill: "הבנת משמעות ביטוי בהקשר",
+        parts: ["הביטוי \"בן זקונים\" מלמד שיוסף נולד ליעקב כאשר יעקב היה כבר ", "."],
+        answers: ["זקן"]
+      }
+    ];
+
+    // מאגר מילים מעורבב לעזרת התלמידים (מכיל את כל מילות היעד הייחודיות)
+    const WORD_BANK = [
+      "זקונים",
+      "כנען",
+      "דיבה",
+      "פסים",
+      "ישראל",
+      "רעים",
+      "שנאה",
+      "כתונת",
+      "שבע",
+      "זקן"
+    ];
+
+    // פריסת מקלדת עברית מלאה (3 שורות נוחות ללחיצה בחדר אימרסיבי)
+    const KEYBOARD_ROWS = [
+      ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י"],
+      ["כ", "ך", "ל", "מ", "ם", "נ", "ן", "ס", "ע"],
+      ["פ", "ף", "צ", "ץ", "ק", "ר", "ש", "ת"]
+    ];
+
+    // משתני מצב המשחק
+    let currentIndex = 0;
+    let activeBlankIndex = 0;
+    let userInputs = []; // מערך מחרוזות לכל קו השלמה במשפט הנוכחי
+    let solvedQuestions = new Set();
+
+    // מנוע צלילים מובנה (ללא קבצים חיצוניים)
+    let audioCtx = null;
+    function playTone(freq, duration = 0.12, type = "sine") {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // התעלמות שקטה אם הדפדפן חוסם אודיו
+      }
+    }
+
+    function playSuccessMelody() {
+      playTone(523.25, 0.14, "triangle"); // C5
+      setTimeout(() => playTone(659.25, 0.14, "triangle"), 110); // E5
+      setTimeout(() => playTone(783.99, 0.28, "triangle"), 220); // G5
+    }
+
+    function playErrorSound() {
+      playTone(210, 0.22, "sawtooth");
+    }
+
+    // אתחול המקלדת העברית על המסך
+    function buildKeyboard() {
+      const kbContainer = document.getElementById("hebrew-keyboard");
+      kbContainer.innerHTML = "";
+
+      KEYBOARD_ROWS.forEach((row) => {
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "flex justify-center gap-1.5 md:gap-2 w-full";
+
+        row.forEach((char) => {
+          const isSofit = ["ך", "ם", "ן", "ף", "ץ"].includes(char);
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = char;
+          btn.onclick = () => handleLetterPress(char);
+
+          btn.className = `letter-tile flex-1 max-w-[74px] h-11 md:h-12 lg:h-13 rounded-xl font-extrabold text-xl md:text-2xl flex items-center justify-center cursor-pointer border ${
+            isSofit
+              ? "bg-amber-200 hover:bg-amber-100 text-amber-950 border-amber-500"
+              : "bg-amber-50 hover:bg-white text-stone-900 border-amber-700/40"
+          }`;
+
+          rowDiv.appendChild(btn);
+        });
+
+        kbContainer.appendChild(rowDiv);
+      });
+    }
+
+    // טעינת משפט נוכחי למסך
+    function loadQuestion(index) {
+      currentIndex = index;
+      const q = QUESTIONS[currentIndex];
+      activeBlankIndex = 0;
+
+      // אם השאלה כבר נפתרה בעבר, נציג את התשובות המלאות
+      if (solvedQuestions.has(q.id)) {
+        userInputs = [...q.answers];
+      } else {
+        userInputs = q.answers.map(() => "");
+      }
+
+      document.getElementById("progress-counter").textContent = `${currentIndex + 1} / ${QUESTIONS.length}`;
+      document.getElementById("skill-badge").textContent = `מיומנות מפמ"ר: ${q.skill}`;
+      document.getElementById("verse-ref").textContent = `${q.verse} • ${q.source}`;
+
+      hideFeedback();
+      renderSentence();
+    }
+
+    // רינדור המשפט עם קווי ההשלמה הלחיצים
+    function renderSentence() {
+      const q = QUESTIONS[currentIndex];
+      const container = document.getElementById("sentence-container");
+      container.innerHTML = "";
+
+      q.parts.forEach((partText, idx) => {
+        // טקסט רגיל של המשפט
+        if (partText) {
+          const span = document.createElement("span");
+          span.textContent = partText;
+          container.appendChild(span);
+        }
+
+        // אם יש קו השלמה אחרי חלק הטקסט הזה
+        if (idx < q.answers.length) {
+          const targetWord = q.answers[idx];
+          const currentVal = userInputs[idx] || "";
+          const isSolved = solvedQuestions.has(q.id);
+          const isActive = !isSolved && activeBlankIndex === idx;
+
+          const blankBtn = document.createElement("button");
+          blankBtn.type = "button";
+          blankBtn.onclick = () => {
+            if (!isSolved) {
+              activeBlankIndex = idx;
+              renderSentence();
+            }
+          };
+
+          // רוחב הקו מותאם לאורך המילה הצפויה כדי לתת רמז חזותי הוגן
+          const minWidthPx = Math.max(120, targetWord.length * 26);
+          blankBtn.style.minWidth = `${minWidthPx}px`;
+
+          blankBtn.className = `px-3 py-1 mx-1 rounded-xl border-b-4 border-2 transition-all font-extrabold text-center inline-flex items-center justify-center min-h-[48px] cursor-pointer ${
+            isSolved
+              ? "bg-emerald-100 border-emerald-600 text-emerald-900"
+              : isActive
+              ? "active-blank border-amber-600 text-amber-950"
+              : "bg-stone-100 border-stone-400 text-stone-800"
+          }`;
+
+          if (currentVal.length > 0) {
+            blankBtn.textContent = currentVal;
+          } else {
+            // תצוגת קו מקווקו ברור כשאין עדיין אותיות
+            blankBtn.innerHTML = `<span class="text-stone-400 tracking-widest text-lg">${"• ".repeat(targetWord.length).trim()}</span>`;
+          }
+
+          container.appendChild(blankBtn);
+        }
+      });
+    }
+
+    // לחיצה על אות במקלדת האימרסיבית
+    function handleLetterPress(char) {
+      const q = QUESTIONS[currentIndex];
+      if (solvedQuestions.has(q.id)) return;
+
+      const targetWord = q.answers[activeBlankIndex];
+      let currentWord = userInputs[activeBlankIndex];
+
+      // מניעת חריגה מאורך המילה + הגבלה סבירה
+      if (currentWord.length >= targetWord.length + 2) {
+        playErrorSound();
+        return;
+      }
+
+      playTone(440 + currentWord.length * 35, 0.08, "sine");
+      userInputs[activeBlankIndex] = currentWord + char;
+      hideFeedback();
+      renderSentence();
+
+      // מעבר אוטומטי לקו הבא (אם יש 2 מילים במשפט) כשהמילה הראשונה הושלמה במדויק
+      if (
+        q.answers.length > 1 &&
+        activeBlankIndex === 0 &&
+        userInputs[0] === q.answers[0]
+      ) {
+        activeBlankIndex = 1;
+        renderSentence();
+      }
+    }
+
+    // מחיקת אות אחרונה
+    function backspaceLetter() {
+      const q = QUESTIONS[currentIndex];
+      if (solvedQuestions.has(q.id)) return;
+
+      if (userInputs[activeBlankIndex].length > 0) {
+        playTone(300, 0.07, "sine");
+        userInputs[activeBlankIndex] = userInputs[activeBlankIndex].slice(0, -1);
+        hideFeedback();
+        renderSentence();
+      }
+    }
+
+    // ניקוי המילה הנוכחית
+    function clearCurrentBlank() {
+      const q = QUESTIONS[currentIndex];
+      if (solvedQuestions.has(q.id)) return;
+
+      playTone(260, 0.09, "sine");
+      userInputs[activeBlankIndex] = "";
+      hideFeedback();
+      renderSentence();
+    }
+
+    // מתן רמז: חושף את האות הבאה הנכונה במילה הפעילה
+    function giveHintLetter() {
+      const q = QUESTIONS[currentIndex];
+      if (solvedQuestions.has(q.id)) return;
+
+      const target = q.answers[activeBlankIndex];
+      const current = userInputs[activeBlankIndex];
+
+      // מציאת האות הראשונה שעדיין לא נכתבה נכון
+      let nextCorrectPrefix = "";
+      for (let i = 0; i < target.length; i++) {
+        if (current[i] === target[i]) {
+          nextCorrectPrefix += target[i];
+        } else {
+          nextCorrectPrefix += target[i];
+          break;
+        }
+      }
+
+      userInputs[activeBlankIndex] = nextCorrectPrefix;
+      playTone(600, 0.14, "triangle");
+      showFeedback("💡 נחשפה אות מתוך המילה! המשיכו להשלים.", "info");
+      renderSentence();
+    }
+
+    // בדיקת תשובת התלמידים
+    function checkAnswer() {
+      const q = QUESTIONS[currentIndex];
+      if (solvedQuestions.has(q.id)) {
+        nextQuestion();
+        return;
+      }
+
+      // נורמליזציה עדינה למקרה שתלמיד כתב מ' רגילה בסוף מילה במקום ם' סופית (למשל "רעימ" -> "רעים")
+      const normalizeSofit = (str) =>
+        str
+          .trim()
+          .replace(/כ$/, "ך")
+          .replace(/מ$/, "ם")
+          .replace(/נ$/, "ן")
+          .replace(/פ$/, "ף")
+          .replace(/צ$/, "ץ");
+
+      let allCorrect = true;
+      for (let i = 0; i < q.answers.length; i++) {
+        const cleaned = normalizeSofit(userInputs[i]);
+        if (cleaned === q.answers[i]) {
+          userInputs[i] = q.answers[i]; // תיקון אוטומטי לאות סופית תקנית
+        } else {
+          allCorrect = false;
+        }
+      }
+
+      if (allCorrect) {
+        solvedQuestions.add(q.id);
+        playSuccessMelody();
+        updateTunicProgress();
+        renderSentence();
+        showFeedback("🎉 כל הכבוד! תשובה מדויקת! פס חדש נארג בכתונת הפסים!", "success");
+
+        // מעבר אוטומטי למשפט הבא או למסך ניצחון
+        setTimeout(() => {
+          if (solvedQuestions.size === QUESTIONS.length) {
+            document.getElementById("victory-overlay").classList.remove("hidden");
+          } else {
+            nextQuestion();
+          }
+        }, 1600);
+      } else {
+        playErrorSound();
+        const card = document.getElementById("question-card");
+        card.classList.remove("animate-shake");
+        void card.offsetWidth; // הפעלה מחדש של האנימציה
+        card.classList.add("animate-shake");
+        showFeedback("❌ כמעט! בדקו שוב את האותיות או היעזרו במאגר המילים ובמגילת הפסוקים.", "error");
+      }
+    }
+
+    // עדכון פסי הצבע בכתונת הפסים ומד ההתקדמות
+    function updateTunicProgress() {
+      QUESTIONS.forEach((q, idx) => {
+        const stripe = document.getElementById(`stripe-${idx}`);
+        if (stripe) {
+          stripe.setAttribute("opacity", solvedQuestions.has(q.id) ? "1" : "0.12");
+        }
+      });
+      const statusEl = document.getElementById("woven-status");
+      if (statusEl) {
+        statusEl.textContent = `נארגו ${solvedQuestions.size} מתוך ${QUESTIONS.length} פסים`;
+      }
+    }
+
+    // הצגת הודעת משוב מובנית בתוך כרטיס השאלה
+    function showFeedback(message, type = "info") {
+      const banner = document.getElementById("feedback-banner");
+      if (!banner) return;
+      banner.textContent = message;
+      banner.classList.remove(
+        "hidden",
+        "bg-emerald-100",
+        "text-emerald-900",
+        "border-emerald-400",
+        "bg-rose-100",
+        "text-rose-900",
+        "border-rose-400",
+        "bg-amber-100",
+        "text-amber-900",
+        "border-amber-400",
+        "border"
+      );
+
+      if (type === "success") {
+        banner.classList.add("bg-emerald-100", "text-emerald-900", "border", "border-emerald-400");
+      } else if (type === "error") {
+        banner.classList.add("bg-rose-100", "text-rose-900", "border", "border-rose-400");
+      } else {
+        banner.classList.add("bg-amber-100", "text-amber-900", "border", "border-amber-400");
+      }
+    }
+
+    // הסתרת הודעת המשוב
+    function hideFeedback() {
+      const banner = document.getElementById("feedback-banner");
+      if (banner) {
+        banner.classList.add("hidden");
+      }
+    }
+
+    // מעבר למשפט הבא
+    function nextQuestion() {
+      const nextIdx = (currentIndex + 1) % QUESTIONS.length;
+      loadQuestion(nextIdx);
+    }
+
+    // מעבר למשפט הקודם
+    function prevQuestion() {
+      const prevIdx = (currentIndex - 1 + QUESTIONS.length) % QUESTIONS.length;
+      loadQuestion(prevIdx);
+    }
+
+    // פתיחה/סגירה של מגירת הפסוקים
+    function toggleVersesDrawer(show) {
+      const drawer = document.getElementById("verses-drawer");
+      if (show) {
+        drawer.classList.remove("hidden");
+        playTone(500, 0.1, "sine");
+      } else {
+        drawer.classList.add("hidden");
+      }
+    }
+
+    // פתיחה/סגירה של מגירת מאגר המילים לתלמידים
+    function toggleWordBankDrawer(show) {
+      const drawer = document.getElementById("wordbank-drawer");
+      if (show) {
+        renderStudentWordBank();
+        document.getElementById("wordbank-tip").textContent = "";
+        drawer.classList.remove("hidden");
+        playTone(540, 0.1, "sine");
+      } else {
+        drawer.classList.add("hidden");
+      }
+    }
+
+    // רינדור כרטיסיות המילים במאגר העזרה לתלמידים
+    function renderStudentWordBank() {
+      const grid = document.getElementById("student-wordbank-grid");
+      grid.innerHTML = "";
+
+      // בדיקה אילו מילים כבר נפתרו בכל המשפטים שבהם הן מופיעות
+      WORD_BANK.forEach((word) => {
+        const matchingQuestions = QUESTIONS.filter((q) => q.answers.includes(word));
+        const isFullyUsed = matchingQuestions.every((q) => solvedQuestions.has(q.id));
+
+        const card = document.createElement("button");
+        card.type = "button";
+        card.onclick = () => {
+          playTone(620, 0.08, "triangle");
+          document.getElementById("wordbank-tip").textContent = `✨ בחרתם להיעזר במילה "${word}" – כעת הרכיבו אותה על הקו בעזרת אריחי האותיות!`;
+        };
+
+        card.className = `py-3 px-4 rounded-2xl border-2 font-extrabold text-xl md:text-2xl shadow-sm transition cursor-pointer flex items-center justify-center gap-2 active:scale-95 ${
+          isFullyUsed
+            ? "bg-emerald-100 border-emerald-500 text-emerald-900"
+            : "bg-white hover:bg-purple-100 border-purple-400 text-purple-950"
+        }`;
+
+        card.innerHTML = isFullyUsed ? `<span>✔</span><span>${word}</span>` : `<span>${word}</span>`;
+        grid.appendChild(card);
+      });
+    }
+
+    // פתיחה/סגירה של מדריך המורה ומאגר המשפטים
+    function toggleTeacherModal(show) {
+      const modal = document.getElementById("teacher-modal");
+      if (show) {
+        populateTeacherList();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    // מילוי מאגר המילים ורשימת כל 9 המשפטים במדריך למורה
+    function populateTeacherList() {
+      const wordBankContainer = document.getElementById("teacher-wordbank-list");
+      wordBankContainer.innerHTML = "";
+      WORD_BANK.forEach((word) => {
+        const badge = document.createElement("span");
+        badge.className = "bg-white border-2 border-purple-400 text-purple-950 font-extrabold px-3.5 py-1.5 rounded-xl text-base shadow-xs";
+        badge.textContent = word;
+        wordBankContainer.appendChild(badge);
+      });
+
+      const listContainer = document.getElementById("teacher-sentences-list");
+      listContainer.innerHTML = "";
+
+      QUESTIONS.forEach((q) => {
+        let fullSentenceDisplay = "";
+        q.parts.forEach((part, idx) => {
+          fullSentenceDisplay += part;
+          if (idx < q.answers.length) {
+            fullSentenceDisplay += `<span class="bg-emerald-100 text-emerald-900 font-extrabold px-2 py-0.5 rounded mx-1 border border-emerald-400">${q.answers[idx]}</span>`;
+          }
+        });
+
+        const item = document.createElement("div");
+        item.className = "bg-stone-50 border border-stone-300 rounded-xl p-3 flex flex-col justify-between";
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-xs mb-1.5">
+            <span class="font-bold text-amber-800">${q.id}. ${q.verse} (${q.source})</span>
+            <span class="bg-blue-100 text-blue-900 px-2 py-0.5 rounded font-bold">${q.skill}</span>
+          </div>
+          <p class="text-sm md:text-base text-stone-900 font-medium leading-relaxed">${fullSentenceDisplay}</p>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    // איפוס מלא של המשחק
+    function restartGame() {
+      solvedQuestions.clear();
+      QUESTIONS.forEach((_, idx) => {
+        const stripe = document.getElementById(`stripe-${idx}`);
+        if (stripe) stripe.setAttribute("opacity", "0.12");
+      });
+      updateTunicProgress();
+      document.getElementById("victory-overlay").classList.add("hidden");
+      loadQuestion(0);
+    }
+
+    // הפעלה ראשונית עם טעינת החלון
+    window.onload = function () {
+      buildKeyboard();
+      loadQuestion(0);
+    };
+  </script>
+</body>
+</html>
