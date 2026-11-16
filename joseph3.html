@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>חידת השאלות: האחים והאב מול חלומות יוסף - בראשית ל"ז</title>
+  <!-- טעינת Tailwind CSS לעיצוב רספונסיבי ומדויק -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- טעינת גופנים עבריים קריאים ומקראיים התואמים לשני הקירות הראשונים -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Rubik:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: #0c1715;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    /* מסגרת 16:9 קבועה וממורכזת לחדר האימרסיבי, הרמונית לקירות 1 ו-2 */
+    #immersive-stage {
+      width: min(100vw, calc(100dvh * (16 / 9)));
+      height: min(100dvh, calc(100vw * (9 / 16)));
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 42%, #fffdf7 0%, #f5efe0 58%, #d1fae5 100%);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
+      border: 4px solid #0f766e;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .font-bible {
+      font-family: 'Frank Ruhl Libre', serif;
+    }
+
+    /* אנימציות משחקיות */
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      70% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes pulseBridge {
+      0%, 100% { opacity: 0.75; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.04); }
+    }
+
+    @keyframes talkNod {
+      0%, 100% { transform: rotate(0deg) translateY(0px); }
+      50% { transform: rotate(-4deg) translateY(-3px); }
+    }
+
+    .animate-pop {
+      animation: popIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-shake {
+      animation: shake 0.38s ease-in-out;
+    }
+
+    .animate-float {
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+
+    .anim-talk {
+      transform-box: fill-box;
+      transform-origin: bottom center;
+      animation: talkNod 2.4s ease-in-out infinite;
+    }
+
+    .anim-bridge-glow {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: pulseBridge 2s ease-in-out infinite;
+    }
+
+    /* כפתורי בחירה תלת-ממדיים בגובה נגיש לתלמידים */
+    .game-btn {
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 4px 0 #115e59;
+    }
+
+    .game-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #115e59;
+    }
+
+    .duel-btn {
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: 0 5px 0 rgba(15, 23, 42, 0.45);
+    }
+
+    .duel-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(15, 23, 42, 0.45);
+    }
+
+    /* סרגל גלילה עדין למודאלים */
+    .custom-scroll::-webkit-scrollbar {
+      width: 7px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #0d9488;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- הבמה המרכזית ביחס 16:9 קבוע -->
+  <div id="immersive-stage">
+
+    <!-- רצועה עליונה: כותרת, לשוניות שלבי המשחק ומד ניקוד/רצף -->
+    <header class="shrink-0 w-full px-4 py-1.5 flex items-center justify-between border-b-2 border-teal-950/20 bg-gradient-to-l from-teal-950 via-emerald-950 to-teal-950 text-amber-50">
+      <div class="flex items-center gap-2">
+        <span class="bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-lg font-extrabold text-xs shadow-xs">
+          בראשית ל"ז • ח'–י"א
+        </span>
+        <h1 class="text-sm md:text-lg font-black tracking-tight text-amber-100">
+          חידת השאלות: האחים ויעקב
+        </h1>
+      </div>
+
+      <!-- 3 שלבי המשחק -->
+      <nav class="flex items-center gap-1 bg-teal-900/90 p-1 rounded-xl border border-amber-400/30">
+        <button
+          id="tab-stage-0"
+          type="button"
+          onclick="jumpToStage(0)"
+          class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer"
+        >
+          📜 שלב 1: פתיחת המגילות
+        </button>
+        <button
+          id="tab-stage-1"
+          type="button"
+          onclick="jumpToStage(1)"
+          class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer"
+        >
+          ⚡ שלב 2: מי שאל את זה?
+        </button>
+        <button
+          id="tab-stage-2"
+          type="button"
+          onclick="jumpToStage(2)"
+          class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer"
+        >
+          🌉 שלב 3: גשר הדמיון
+        </button>
+      </nav>
+
+      <!-- ניקוד + מגילת פסוקים + מדריך מורה -->
+      <div class="flex items-center gap-2">
+        <div class="bg-teal-900 border border-amber-400/50 px-2.5 py-0.5 rounded-lg flex items-center gap-1.5 text-xs font-black text-amber-300">
+          <span>⭐</span>
+          <span id="score-display">0</span>
+          <span id="streak-badge" class="hidden bg-amber-400 text-slate-950 px-1.5 rounded text-[10px]">רצף x2</span>
+        </div>
+        <button
+          type="button"
+          onclick="toggleVersesModal(true)"
+          class="bg-amber-600 hover:bg-amber-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow cursor-pointer transition"
+        >
+          📜 פסוקים
+        </button>
+        <button
+          type="button"
+          onclick="toggleTeacherModal(true)"
+          class="bg-emerald-700 hover:bg-emerald-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow cursor-pointer transition"
+        >
+          📋 מדריך מורה
+        </button>
+      </div>
+    </header>
+
+    <!-- אזור המשחק המרכזי (ממורכז ונגיש לתלמידי כיתות ד'-ו') -->
+    <main class="flex-1 min-h-0 w-full px-4 py-2 flex items-stretch justify-between gap-3 overflow-hidden">
+
+      <!-- צד ימין (75%): זירת המשחק הפעילה (משתנה לפי השלב) -->
+      <div class="w-[75%] h-full min-h-0 flex flex-col justify-between z-10">
+
+        <!-- ================= שלב 1: פתיחת מגילות השאלה (4 שאלות בחירה אקראיות) ================= -->
+        <section id="stage-0-area" class="w-full h-full min-h-0 flex flex-col justify-between gap-2">
+          <!-- כרטיס השאלה העליון -->
+          <div class="shrink-0 bg-white/95 border-2 border-teal-900/25 rounded-2xl px-4 py-2.5 shadow-sm">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <div class="flex items-center gap-2">
+                <span id="s0-speaker-badge" class="bg-teal-900 text-amber-200 px-2.5 py-0.5 rounded-lg text-xs font-extrabold">
+                  שאלת האחים • פסוק ח'
+                </span>
+                <span id="s0-skill-badge" class="bg-amber-100 text-amber-950 border border-amber-300 px-2.5 py-0.5 rounded-lg text-xs font-bold">
+                  מיומנות מפמ"ר: איתור ציטוט מדויק
+                </span>
+              </div>
+              <span id="s0-counter-badge" class="bg-emerald-100 text-emerald-950 border border-emerald-400/60 px-2.5 py-0.5 rounded-lg text-xs font-extrabold">
+                חידה 1 מתוך 4
+              </span>
+            </div>
+
+            <h2 id="s0-title" class="text-lg md:text-2xl font-black text-slate-900 leading-snug">
+              <!-- כותרת השאלה -->
+            </h2>
+            <p id="s0-hint" class="text-xs md:text-sm text-slate-600 font-medium mt-0.5">
+              <!-- רמז מכוון -->
+            </p>
+            <div id="s0-feedback" class="hidden mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center"></div>
+          </div>
+
+          <!-- 4 כרטיסיות בחירה גדולות בסדר אקראי -->
+          <div id="s0-options-grid" class="flex-1 min-h-0 grid grid-cols-2 gap-2.5 py-0.5">
+            <!-- מוזרק דינמית -->
+          </div>
+        </section>
+
+        <!-- ================= שלב 2: אתגר הדו-קרב המהיר – מי שאל / למי מתאים? ================= -->
+        <section id="stage-1-area" class="hidden w-full h-full min-h-0 flex flex-col justify-between gap-2 animate-pop">
+          <!-- כותרת המיני-משחק -->
+          <div class="shrink-0 bg-white/95 border-2 border-teal-900/25 rounded-2xl px-4 py-2 flex items-center justify-between shadow-xs">
+            <div>
+              <h2 class="text-base md:text-xl font-black text-teal-950 flex items-center gap-1.5">
+                <span>⚡</span> אתגר הזיהוי המהיר: מי שאל את זה?
+              </h2>
+              <p class="text-xs text-slate-600 font-medium">
+                קראו את הכרטיס שבמרכז ולחצו למטה: האם זה שייך <strong>לאחים</strong>, <strong>לאב יעקב</strong>, או <strong>לשניהם יחד</strong>!
+              </p>
+            </div>
+            <span id="s1-counter-badge" class="bg-amber-100 border border-amber-400 text-amber-950 px-3 py-1 rounded-xl font-black text-xs shrink-0">
+              כרטיס 1 מתוך 6
+            </span>
+          </div>
+
+          <!-- הכרטיס המרכזי הצף -->
+          <div id="s1-card-box" class="flex-1 min-h-0 bg-gradient-to-br from-white via-amber-50/70 to-emerald-50/70 border-4 border-amber-500 rounded-3xl p-4 flex flex-col items-center justify-center text-center shadow-md relative">
+            <span id="s1-card-tag" class="bg-teal-900 text-amber-200 px-3 py-0.5 rounded-full text-xs font-extrabold mb-2">
+              ציטוט מהתורה או מאפיין השאלה
+            </span>
+            <p id="s1-card-text" class="font-bible text-xl md:text-3xl font-black text-slate-900 leading-snug max-w-2xl">
+              <!-- טקסט הכרטיס -->
+            </p>
+            <div id="s1-feedback" class="hidden mt-3 px-4 py-1 rounded-xl text-xs md:text-sm font-extrabold"></div>
+          </div>
+
+          <!-- 3 כפתורי פעולה גדולים בתחתית הנגישה לילדים -->
+          <div class="shrink-0 grid grid-cols-3 gap-3 h-20">
+            <button
+              type="button"
+              onclick="handleDuelChoice('brothers', this)"
+              class="duel-btn bg-amber-600 hover:bg-amber-500 text-white border-2 border-amber-900 rounded-2xl p-2 flex flex-col items-center justify-center cursor-pointer"
+            >
+              <span class="text-2xl leading-none">👬</span>
+              <span class="text-sm md:text-lg font-black mt-1">האחים של יוסף</span>
+            </button>
+
+            <button
+              type="button"
+              onclick="handleDuelChoice('both', this)"
+              class="duel-btn bg-teal-700 hover:bg-teal-600 text-white border-2 border-teal-950 rounded-2xl p-2 flex flex-col items-center justify-center cursor-pointer"
+            >
+              <span class="text-2xl leading-none">🤝</span>
+              <span class="text-sm md:text-lg font-black mt-1">שניהם יחד! (דומה)</span>
+            </button>
+
+            <button
+              type="button"
+              onclick="handleDuelChoice('father', this)"
+              class="duel-btn bg-sky-700 hover:bg-sky-600 text-white border-2 border-sky-950 rounded-2xl p-2 flex flex-col items-center justify-center cursor-pointer"
+            >
+              <span class="text-2xl leading-none">🧔</span>
+              <span class="text-sm md:text-lg font-black mt-1">האב יעקב</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= שלב 3: בניית גשר הדמיון (במה דומות השאלות?) ================= -->
+        <section id="stage-2-area" class="hidden w-full h-full min-h-0 flex flex-col justify-between gap-2 animate-pop">
+          <div class="shrink-0 bg-white/95 border-2 border-teal-900/25 rounded-2xl px-4 py-2 flex items-center justify-between gap-2 shadow-xs">
+            <div>
+              <h2 class="text-base md:text-xl font-black text-teal-950 flex items-center gap-1.5">
+                <span>🌉</span> בניית גשר הדמיון: במה דומות שאלת האחים ושאלת יעקב?
+              </h2>
+              <p class="text-xs text-slate-700 font-medium">
+                בחרו את <strong>4 אבני הדמיון הנכונות</strong> (מתוך 6) שמראות מה משותף לשאלה של האחים ולשאלה של יעקב!
+              </p>
+            </div>
+            <div id="s2-progress-badge" class="bg-emerald-100 border border-emerald-500 text-emerald-950 px-3 py-1 rounded-xl font-black text-xs shrink-0">
+              נבנו 0 / 4 אבני גשר
+            </div>
+          </div>
+
+          <div id="s2-feedback" class="hidden shrink-0 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center"></div>
+
+          <!-- 6 אבני גשר לחיצות בסדר אקראי (4 נכונות + 2 מסיחים) -->
+          <div id="s2-stones-grid" class="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-2.5 py-0.5">
+            <!-- מוזרק דינמית -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- צד שמאל (25%): זירת הדיאלוג המאוירת ומד התקדמות הגשר -->
+      <aside class="w-[25%] h-full min-h-0 bg-gradient-to-b from-teal-950 via-emerald-950 to-slate-900 border-2 border-amber-400/50 rounded-2xl p-2.5 flex flex-col items-center justify-between text-amber-50 shadow-md z-10">
+        <div class="text-center shrink-0">
+          <h3 id="aside-title" class="text-sm md:text-base font-black text-amber-300 leading-tight">
+            זירת השאלות במשפחה
+          </h3>
+          <p id="aside-sub" class="text-[11px] text-emerald-200 leading-tight mt-0.5">
+            פתחו את מגילות האחים והאב
+          </p>
+        </div>
+
+        <!-- איור SVG אינטראקטיבי המגיב להתקדמות התלמידים -->
+        <div id="aside-visual-box" class="flex-1 min-h-0 w-full flex items-center justify-center my-1 overflow-hidden">
+          <!-- מוזרק דינמית -->
+        </div>
+
+        <!-- מד התקדמות כללי -->
+        <div class="shrink-0 w-full bg-teal-900/80 border border-amber-400/30 rounded-xl p-2 text-center">
+          <div id="aside-prog-text" class="text-xs font-extrabold text-amber-200 mb-1">
+            התקדמות במשחק: 0%
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="aside-prog-bar" class="h-full bg-gradient-to-l from-amber-400 to-emerald-400 transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- רצועה תחתונה להנחיה וניווט מהיר -->
+    <footer class="shrink-0 w-full px-4 py-1 bg-teal-950/10 border-t border-teal-950/15 flex items-center justify-between text-xs text-slate-900 font-bold">
+      <span id="footer-tip">💡 היעזרו בכפתור "📜 פסוקים" כדי לבדוק את המילים המדויקות שאמרו האחים ויעקב.</span>
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="prevStep()" class="hover:text-teal-800 cursor-pointer">◀ הקודם</button>
+        <span class="text-slate-400">|</span>
+        <button type="button" onclick="nextStep()" class="hover:text-teal-800 cursor-pointer">הבא ▶</button>
+      </div>
+    </footer>
+
+    <!-- מודאל מגילת פסוקים (בראשית ל"ז ה'-י"א) -->
+    <div id="verses-modal" class="hidden absolute inset-0 bg-slate-950/75 backdrop-blur-xs z-30 flex items-center justify-center p-5">
+      <div class="bg-[#fffdf7] border-4 border-teal-900 rounded-3xl max-w-4xl w-full max-h-[90%] flex flex-col p-5 shadow-2xl animate-pop">
+        <div class="shrink-0 flex items-center justify-between border-b-2 border-teal-900/15 pb-2.5 mb-3">
+          <h3 class="text-xl md:text-2xl font-black text-teal-950 flex items-center gap-2">
+            <span>📜</span> בראשית פרק ל"ז – השאלות של האחים (ח') ושל יעקב (י')
+          </h3>
+          <button type="button" onclick="toggleVersesModal(false)" class="bg-rose-600 hover:bg-rose-500 text-white px-3.5 py-1.5 rounded-xl font-bold text-sm cursor-pointer">
+            ✕ סגור מגילה
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll font-bible text-lg md:text-xl leading-relaxed text-slate-900 space-y-2.5 bg-amber-50/70 p-4 rounded-2xl border border-amber-300">
+          <p><strong class="text-teal-800">(ז)</strong> וְהִנֵּה אֲנַחְנוּ מְאַלְּמִים אֲלֻמִּים בְּתוֹךְ הַשָּׂדֶה, וְהִנֵּה קָמָה אֲלֻמָּתִי וְגַם-נִצָּבָה; וְהִנֵּה תְסֻבֶּינָה אֲלֻמֹּתֵיכֶם וַתִּשְׁתַּחֲוֶיןָ לַאֲלֻמָּתִי.</p>
+          <p class="bg-amber-200/75 border-r-4 border-amber-600 p-2 rounded-lg">
+            <strong class="text-amber-950">(ח) שאלת האחים:</strong> וַיֹּאמְרוּ לוֹ אֶחָיו: <u>הֲמָלֹךְ תִּמְלֹךְ עָלֵינוּ אִם-מָשׁוֹל תִּמְשֹׁל בָּנוּ?</u> וַיּוֹסִפוּ עוֹד שְׂנֹא אֹתוֹ עַל-חֲלֹמֹתָיו וְעַל-דְּבָרָיו.
+          </p>
+          <p><strong class="text-teal-800">(ט)</strong> וַיַּחֲלֹם עוֹד חֲלוֹם אַחֵר וַיְסַפֵּר אֹתוֹ לְאֶחָיו; וַיֹּאמֶר: הִנֵּה חָלַמְתִּי חֲלוֹם עוֹד, וְהִנֵּה הַשֶּׁמֶשׁ וְהַיָּרֵחַ וְאַחַד עָשָׂר כּוֹכָבִים מִשְׁתַּחֲוִים לִי.</p>
+          <p class="bg-sky-100/90 border-r-4 border-sky-600 p-2 rounded-lg">
+            <strong class="text-sky-950">(י) שאלת האב יעקב:</strong> וַיְסַפֵּר אֶל-אָבִיו וְאֶל-אֶחָיו, וַיִּגְעַר-בּוֹ אָבִיו וַיֹּאמֶר לוֹ: <u>מָה הַחֲלוֹם הַזֶּה אֲשֶׁר חָלָמְתָּ? הֲבוֹא נָבוֹא אֲנִי וְאִמְּךָ וְאַחֶיךָ לְהִשְׁתַּחֲוֺת לְךָ אָרְצָה?</u>
+          </p>
+          <p><strong class="text-teal-800">(יא)</strong> וַיְקַנְאוּ-בוֹ אֶחָיו; וְאָבִיו שָׁמַר אֶת-הַדָּבָר.</p>
+        </div>
+
+        <div class="shrink-0 mt-3 text-center">
+          <button type="button" onclick="toggleVersesModal(false)" class="bg-teal-800 hover:bg-teal-700 text-white px-6 py-2 rounded-xl font-bold text-base cursor-pointer shadow">
+            מצאתי את התשובה! חזרה למשחק
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- מודאל מדריך למורה -->
+    <div id="teacher-modal" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-xs z-40 flex items-center justify-center p-5">
+      <div class="bg-white border-4 border-teal-950 rounded-3xl w-full max-w-5xl h-[88%] flex flex-col p-5 shadow-2xl animate-pop">
+        <div class="shrink-0 flex items-center justify-between border-b-2 border-slate-200 pb-2.5 mb-3">
+          <div>
+            <h3 class="text-xl md:text-2xl font-black text-teal-950">מדריך למורה: השאלות של האחים ושל יעקב (בראשית ל"ז ח', י')</h3>
+            <p class="text-xs md:text-sm text-slate-600">ניתוח השאלות, הבנת השאלה הרטורית והשוואת הדמיון ברמת מבחן מפמ"ר</p>
+          </div>
+          <button type="button" onclick="toggleTeacherModal(false)" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-1.5 rounded-xl font-bold cursor-pointer">
+            ✕ חזרה למשחק
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll pl-2 space-y-4 text-right text-sm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-amber-50 border border-amber-300 rounded-2xl p-3.5">
+              <h4 class="font-black text-base text-amber-950 mb-1">👬 שאלת האחים (פסוק ח' – לאחר חלום האלומות)</h4>
+              <p class="font-bible text-base font-bold text-amber-900 mb-1">"הֲמָלֹךְ תִּמְלֹךְ עָלֵינוּ אִם-מָשׁוֹל תִּמְשֹׁל בָּנוּ?"</p>
+              <p class="text-slate-800"><strong>המשמעות:</strong> שאלה רטורית של כעס, זלזול והתנגדות לרעיון שיוסף הצעיר ימלוך וישלוט על אחיו הגדולים.</p>
+            </div>
+
+            <div class="bg-sky-50 border border-sky-300 rounded-2xl p-3.5">
+              <h4 class="font-black text-base text-sky-950 mb-1">🧔 שאלת האב יעקב (פסוק י' – לאחר חלום השמש והכוכבים)</h4>
+              <p class="font-bible text-base font-bold text-sky-900 mb-1">"מָה הַחֲלוֹם הַזֶּה אֲשֶׁר חָלָמְתָּ? הֲבוֹא נָבוֹא אֲנִי וְאִמְּךָ וְאַחֶיךָ לְהִשְׁתַּחֲוֺת לְךָ אָרְצָה?"</p>
+              <p class="text-slate-800"><strong>המשמעות:</strong> גערה פומבית המביעה פליאה ותמיהה: האם ייתכן שההורים והאחים יבואו להשתחוות לבן הצעיר?</p>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50 border border-emerald-300 rounded-2xl p-4">
+            <h4 class="font-black text-base text-emerald-950 mb-2">🌉 במה דומות זו לזו השאלות של האחים ושל יעקב? (נקודות מפתח למפמ"ר)</h4>
+            <ul class="list-disc pr-5 space-y-1.5 text-slate-900">
+              <li><strong>שתיהן שאלות רטוריות (תמיהה וביקורת):</strong> השואלים אינם מצפים שיוסף יענה להם, אלא מביעים פליאה וחוסר הסכמה.</li>
+              <li><strong>בשתי השאלות מבינים מיד את פירוש החלום:</strong> גם האחים וגם יעקב מפענחים מיד שהסמלים (אלומות / שמש ירח וכוכבים) מסמלים אותם משתחווים ליוסף.</li>
+              <li><strong>מבנה לשוני דומה:</strong> שתיהן פותחות ב-<strong>ה' השאלה</strong> ("<strong>הֲ</strong>מלוך...", "<strong>הֲ</strong>בוא...") ובכפילות פועל לחיזוק הפליאה.</li>
+              <li><strong>התנגדות לעליונות יוסף:</strong> שתיהן מבטאות סירוב לכך שיוסף הצעיר יהיה עליון על בני משפחתו.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- מסך סיום חגיגי -->
+    <div id="victory-overlay" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-6">
+      <div class="bg-[#fffdf7] border-4 border-amber-500 rounded-3xl max-w-2xl w-full p-7 text-center shadow-2xl animate-pop">
+        <div class="text-5xl mb-2">📜⚡🌉🏆</div>
+        <h2 class="text-2xl md:text-3xl font-black text-teal-950 mb-2">אלופים! השלמתם את חידת השאלות!</h2>
+        <p class="text-base md:text-lg text-slate-700 mb-3">
+          זיהיתם את שאלת האחים, את שאלת האב יעקב, ובניתם בהצלחה את <strong>גשר הדמיון</strong> ביניהן!
+        </p>
+        <div id="final-score-pill" class="inline-block bg-amber-100 border-2 border-amber-500 text-amber-950 px-5 py-1.5 rounded-2xl font-black text-lg mb-5">
+          ניקוד סופי: 0 נקודות
+        </div>
+        <div class="flex items-center justify-center gap-3">
+          <button type="button" onclick="document.getElementById('victory-overlay').classList.add('hidden')" class="bg-teal-800 hover:bg-teal-700 text-white px-5 py-2.5 rounded-2xl font-bold text-base shadow cursor-pointer">
+            צפייה בגשר הדמיון
+          </button>
+          <button type="button" onclick="restartGame()" class="bg-amber-600 hover:bg-amber-500 text-white px-6 py-2.5 rounded-2xl font-black text-base shadow cursor-pointer">
+            🔄 שחקו שוב מהתחלה
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ================= נתוני שלב 1: פתיחת מגילות השאלה (4 שאלות) =================
+    const STAGE_0_QUESTIONS = [
+      {
+        id: "s0_q1",
+        speaker: "שאלת האחים • פסוק ח'",
+        skill: "איתור ציטוט מדויק מהכתוב",
+        title: "מה הייתה השאלה ששאלו האחים את יוסף לאחר החלום הראשון?",
+        hint: "קראו בפסוק ח' כיצד הגיבו האחים כששמעו על אלומותיהם המשתחוות.",
+        options: [
+          { text: "הֲמָלֹךְ תִּמְלֹךְ עָלֵינוּ אִם-מָשׁוֹל תִּמְשֹׁל בָּנוּ?", icon: "👑", correct: true },
+          { text: "הֲבוֹא נָבוֹא אֲנִי וְאִמְּךָ וְאַחֶיךָ לְהִשְׁתַּחֲוֺת לְךָ?", icon: "☀️", correct: false },
+          { text: "מַדּוּעַ אָבִינוּ אָהַב אוֹתְךָ מִכָּל אֶחָיךָ?", icon: "👘", correct: false },
+          { text: "הַאִם אַתָּה רוֹצֶה לָלֶכֶת לִרְעוֹת אֶת הַצֹּאן בִּשְׁכֶם?", icon: "🐑", correct: false }
+        ]
+      },
+      {
+        id: "s0_q2",
+        speaker: "כוונת שאלת האחים • פסוק ח'",
+        skill: "הבנת שאלה רטורית ורגשות",
+        title: "מדוע שאלו האחים \"המלוך תמלוך עלינו אם משול תמשול בנו\"?",
+        hint: "האם האחים באמת רצו לדעת אם יוסף יהיה מלך, או שהביעו רגש מסוים?",
+        options: [
+          { text: "כדי להביע כעס, זלזול וסירוב לכך שיוסף ישלוט עליהם", icon: "😠", correct: true },
+          { text: "כדי לבקש מיוסף שימנה אותם לשרים בארמון שלו", icon: "🏛️", correct: false },
+          { text: "כי הם לא הבינו בכלל שהאלומות בחלום מסמלות אותם", icon: "❓", correct: false },
+          { text: "כדי לעודד את יוסף לספר להם חלומות נוספים", icon: "😊", correct: false }
+        ]
+      },
+      {
+        id: "s0_q3",
+        speaker: "שאלת האב יעקב • פסוק י'",
+        skill: "איתור ציטוט מדויק מהכתוב",
+        title: "מה הייתה השאלה ששאל האב יעקב את יוסף לאחר החלום השני?",
+        hint: "בדקו בפסוק י' מה אמר יעקב לאחר שגער ביוסף.",
+        options: [
+          { text: "מָה הַחֲלוֹם הַזֶּה אֲשֶׁר חָלָמְתָּ? הֲבוֹא נָבוֹא אֲנִי וְאִמְּךָ וְאַחֶיךָ לְהִשְׁתַּחֲוֺת לְךָ אָרְצָה?", icon: "🧔", correct: true },
+          { text: "הֲמָלֹךְ תִּמְלֹךְ עָלֵינוּ אִם-מָשׁוֹל תִּמְשֹׁל בָּנוּ?", icon: "🌾", correct: false },
+          { text: "אֵיפֹה הָאֵלֶּה שֶׁרָאִיתָ בַּשָּׂדֶה הַיּוֹם?", icon: "🌿", correct: false },
+          { text: "לָמָּה סִפַּרְתָּ אֶת הַחֲלוֹם הַזֶּה רַק לְאֶחָיךָ?", icon: "🤫", correct: false }
+        ]
+      },
+      {
+        id: "s0_q4",
+        speaker: "תגובת האב יעקב • פסוקים י'–י\"א",
+        skill: "ניתוח תגובת דמות מורכבת",
+        title: "כיצד התייחס יעקב לחלום יוסף מיד כששאל אותו?",
+        hint: "שימו לב למילה הפותחת את תגובת יעקב בפסוק י': \"וַיִּגְעַר-בּוֹ אָבִיו\".",
+        options: [
+          { text: "הוא גער ביוסף בתמיהה על הרעיון שההורים והאחים ישתחוו לו", icon: "🤨", correct: true },
+          { text: "הוא השתחווה ליוסף מיד מול כל האחים", icon: "🙇", correct: false },
+          { text: "הוא קרע ליוסף את כתונת הפסים מכעס", icon: "✂️", correct: false },
+          { text: "הוא צחק ואמר שזהו החלום היפה ביותר ששמע", icon: "😄", correct: false }
+        ]
+      }
+    ];
+
+    // ================= נתוני שלב 2: אתגר הזיהוי המהיר (6 כרטיסים מעורבבים) =================
+    const STAGE_1_DUEL_CARDS = [
+      {
+        id: "d_1",
+        tag: "ציטוט מפסוק ח'",
+        text: "\"הֲמָלֹךְ תִּמְלֹךְ עָלֵינוּ אִם-מָשׁוֹל תִּמְשֹׁל בָּנוּ?\"",
+        answer: "brothers",
+        explanation: "נכון! אלו דברי האחים לאחר חלום האלומות."
+      },
+      {
+        id: "d_2",
+        tag: "ציטוט מפסוק י'",
+        text: "\"הֲבוֹא נָבוֹא אֲנִי וְאִמְּךָ וְאַחֶיךָ לְהִשְׁתַּחֲוֺת לְךָ אָרְצָה?\"",
+        answer: "father",
+        explanation: "נכון! זו שאלתו של האב יעקב לאחר חלום השמש, הירח והכוכבים."
+      },
+      {
+        id: "d_3",
+        tag: "מאפיין משותף לשתי השאלות",
+        text: "שאלו שאלה רטורית מתוך תמיהה והתנגדות לעליונות של יוסף",
+        answer: "both",
+        explanation: "מדויק! גם האחים וגם יעקב השתמשו בשאלה רטורית של תמיהה."
+      },
+      {
+        id: "d_4",
+        tag: "תגובה רגשית (פסוק ח')",
+        text: "בעקבות השאלה והחלום – הוסיפו לשנוא את יוסף עוד יותר",
+        answer: "brothers",
+        explanation: "כל הכבוד! האחים הם שהוסיפו לשנוא אותו."
+      },
+      {
+        id: "d_5",
+        tag: "תגובה מיוחדת (פסוק י\"א)",
+        text: "גער ביוסף בגלוי, אך שמר את הדבר בליבו",
+        answer: "father",
+        explanation: "יפה מאוד! זהו האב יעקב ששמר את הדבר בליבו."
+      },
+      {
+        id: "d_6",
+        tag: "הבנת הסמלים בחלום",
+        text: "הבינו מיד שהחלום רומז שהם ישתחוו ליוסף",
+        answer: "both",
+        explanation: "בדיוק! גם האחים וגם יעקב פירשו מיד את החלום כמדבר עליהם."
+      }
+    ];
+
+    // ================= נתוני שלב 3: אבני גשר הדמיון (4 נכונות + 2 מסיחים) =================
+    const STAGE_2_STONES = [
+      {
+        id: "st_1",
+        icon: "❓",
+        title: "שתיהן שאלות רטוריות",
+        desc: "השואלים לא מצפים לתשובה, אלא מביעים פליאה, תמיהה וביקורת.",
+        isCorrect: true
+      },
+      {
+        id: "st_2",
+        icon: "💡",
+        title: "הבנת פירוש החלום מיד",
+        desc: "גם האחים וגם יעקב מבינים שהסמלים בחלום מסמלים אותם משתחווים ליוסף.",
+        isCorrect: true
+      },
+      {
+        id: "st_3",
+        icon: "👑",
+        title: "התנגדות לשליטת יוסף",
+        desc: "בשתי השאלות מתקוממים נגד הרעיון שבן הזקונים ישלוט במשפחה.",
+        isCorrect: true
+      },
+      {
+        id: "st_4",
+        icon: "🔤",
+        title: "מבנה לשוני דומה (ה' השאלה)",
+        desc: "שתיהן פותחות בה' השאלה וכפילות פועל: \"הֲמלוך תמלוך\" / \"הֲבוא נבוא\".",
+        isCorrect: true
+      },
+      {
+        id: "st_5",
+        icon: "🥳",
+        title: "שתיהן מביעות שמחה וגאווה",
+        desc: "האחים ויעקב שמחו מאוד על החלומות ובירכו את יוסף שיהיה מלך.",
+        isCorrect: false
+      },
+      {
+        id: "st_6",
+        icon: "🤷",
+        title: "אף אחד לא הבין את החלום",
+        desc: "גם האחים וגם יעקב חשבו שהחלומות עוסקים רק במזג האוויר ובחקלאות.",
+        isCorrect: false
+      }
+    ];
+
+    // משתני מצב המשחק
+    let currentStage = 0; // 0 = מגילות, 1 = דו-קרב, 2 = גשר הדמיון
+    let s0Index = 0;
+    let s1Index = 0;
+    let score = 0;
+    let streak = 0;
+
+    let solvedS0 = new Set();
+    let solvedS1 = new Set();
+    let solvedS2Stones = new Set();
+
+    let shuffledDuelCards = [];
+    let shuffledStones = [];
+
+    // ערבוב אקראי (Fisher-Yates)
+    function shuffleArray(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function prepareRandomizedData() {
+      STAGE_0_QUESTIONS.forEach((q) => {
+        q.shuffledOptions = shuffleArray(q.options);
+      });
+      shuffledDuelCards = shuffleArray(STAGE_1_DUEL_CARDS);
+      shuffledStones = shuffleArray(STAGE_2_STONES);
+    }
+
+    // מנוע צלילים מובנה
+    let audioCtx = null;
+    function playTone(freq, duration = 0.12, type = "sine") {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.11, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // התעלמות שקטה
+      }
+    }
+
+    function playSuccessChime() {
+      playTone(523.25, 0.12, "triangle");
+      setTimeout(() => playTone(659.25, 0.12, "triangle"), 95);
+      setTimeout(() => playTone(783.99, 0.22, "triangle"), 190);
+    }
+
+    function playErrorBuzz() {
+      playTone(195, 0.22, "sawtooth");
+    }
+
+    function addScore(points) {
+      streak++;
+      const bonus = streak >= 2 ? 5 : 0;
+      score += points + bonus;
+      document.getElementById("score-display").textContent = score;
+      const streakBadge = document.getElementById("streak-badge");
+      if (streak >= 2) {
+        streakBadge.textContent = `רצף x${streak}`;
+        streakBadge.classList.remove("hidden");
+      }
+    }
+
+    function resetStreak() {
+      streak = 0;
+      document.getElementById("streak-badge").classList.add("hidden");
+    }
+
+    // מעבר בין 3 שלבי המשחק
+    function jumpToStage(stageIndex) {
+      currentStage = stageIndex;
+      updateTabsUI();
+
+      document.getElementById("stage-0-area").classList.add("hidden");
+      document.getElementById("stage-1-area").classList.add("hidden");
+      document.getElementById("stage-2-area").classList.add("hidden");
+
+      if (currentStage === 0) {
+        document.getElementById("stage-0-area").classList.remove("hidden");
+        renderStage0();
+      } else if (currentStage === 1) {
+        document.getElementById("stage-1-area").classList.remove("hidden");
+        renderStage1();
+      } else {
+        document.getElementById("stage-2-area").classList.remove("hidden");
+        renderStage2();
+      }
+
+      renderAsideVisual();
+    }
+
+    function updateTabsUI() {
+      [0, 1, 2].forEach((idx) => {
+        const btn = document.getElementById(`tab-stage-${idx}`);
+        if (!btn) return;
+        if (idx === currentStage) {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-black bg-amber-400 text-slate-950 shadow-xs cursor-pointer";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold text-amber-100 hover:bg-teal-800 transition cursor-pointer";
+        }
+      });
+    }
+
+    // ================= רינדור שלב 1: פתיחת מגילות השאלה =================
+    function renderStage0() {
+      const q = STAGE_0_QUESTIONS[s0Index];
+      const isSolved = solvedS0.has(q.id);
+
+      document.getElementById("s0-speaker-badge").textContent = q.speaker;
+      document.getElementById("s0-skill-badge").textContent = `מיומנות מפמ"ר: ${q.skill}`;
+      document.getElementById("s0-counter-badge").textContent = `חידה ${s0Index + 1} מתוך ${STAGE_0_QUESTIONS.length}`;
+      document.getElementById("s0-title").textContent = q.title;
+      document.getElementById("s0-hint").textContent = `💡 ${q.hint}`;
+
+      const feedbackEl = document.getElementById("s0-feedback");
+      if (isSolved) {
+        feedbackEl.textContent = "✔ חידה זו כבר נפתרה בהצלחה!";
+        feedbackEl.className = "mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-emerald-100 text-emerald-900 border border-emerald-400";
+      } else {
+        feedbackEl.className = "hidden";
+      }
+
+      const grid = document.getElementById("s0-options-grid");
+      grid.innerHTML = "";
+
+      const optionsList = q.shuffledOptions || q.options;
+      optionsList.forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+
+        let style = "game-btn w-full h-full rounded-2xl p-3 border-2 flex items-center gap-3 text-right cursor-pointer ";
+        if (isSolved && opt.correct) {
+          style += "bg-emerald-100 border-emerald-600 text-emerald-950";
+        } else if (isSolved) {
+          style += "bg-white/60 border-slate-300 text-slate-500 opacity-70";
+        } else {
+          style += "bg-white/95 hover:bg-amber-50 border-teal-900/30 text-slate-900";
+        }
+
+        btn.className = style;
+        btn.innerHTML = `
+          <span class="text-2xl md:text-3xl shrink-0 bg-teal-50 border border-teal-200 w-12 h-12 rounded-xl flex items-center justify-center">${opt.icon}</span>
+          <span class="text-sm md:text-lg font-extrabold leading-snug">${opt.text}</span>
+        `;
+
+        btn.onclick = () => {
+          if (opt.correct) {
+            if (!solvedS0.has(q.id)) {
+              solvedS0.add(q.id);
+              addScore(20);
+            }
+            playSuccessChime();
+            renderStage0();
+            renderAsideVisual();
+
+            feedbackEl.textContent = "🎉 תשובה מדויקת! המגילה נפתחה!";
+            feedbackEl.className = "mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-emerald-100 text-emerald-900 border border-emerald-500 animate-pop";
+
+            setTimeout(() => {
+              if (s0Index < STAGE_0_QUESTIONS.length - 1) {
+                s0Index++;
+                renderStage0();
+              } else {
+                jumpToStage(1);
+              }
+            }, 1200);
+          } else {
+            resetStreak();
+            playErrorBuzz();
+            btn.classList.remove("animate-shake");
+            void btn.offsetWidth;
+            btn.classList.add("animate-shake", "border-rose-500", "bg-rose-50");
+
+            feedbackEl.textContent = "❌ לא בדיוק... הציצו במגילת הפסוקים למעלה ונסו שוב!";
+            feedbackEl.className = "mt-1.5 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-rose-100 text-rose-900 border border-rose-400";
+          }
+        };
+
+        grid.appendChild(btn);
+      });
+    }
+
+    // ================= רינדור שלב 2: אתגר הדו-קרב המהיר =================
+    function renderStage1() {
+      const card = shuffledDuelCards[s1Index];
+      const isSolved = solvedS1.has(card.id);
+
+      document.getElementById("s1-counter-badge").textContent = `כרטיס ${s1Index + 1} מתוך ${shuffledDuelCards.length}`;
+      document.getElementById("s1-card-tag").textContent = card.tag;
+      document.getElementById("s1-card-text").textContent = card.text;
+
+      const fb = document.getElementById("s1-feedback");
+      if (isSolved) {
+        fb.textContent = `✔ ${card.explanation}`;
+        fb.className = "mt-3 px-4 py-1 rounded-xl text-xs md:text-sm font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-500";
+      } else {
+        fb.className = "hidden";
+      }
+    }
+
+    function handleDuelChoice(chosenActor, btnEl) {
+      const card = shuffledDuelCards[s1Index];
+      const cardBox = document.getElementById("s1-card-box");
+      const fb = document.getElementById("s1-feedback");
+
+      if (chosenActor === card.answer) {
+        if (!solvedS1.has(card.id)) {
+          solvedS1.add(card.id);
+          addScore(15);
+        }
+        playSuccessChime();
+        renderAsideVisual();
+
+        fb.textContent = `🎉 ${card.explanation}`;
+        fb.className = "mt-3 px-4 py-1 rounded-xl text-xs md:text-sm font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-500 animate-pop";
+
+        setTimeout(() => {
+          if (s1Index < shuffledDuelCards.length - 1) {
+            s1Index++;
+            renderStage1();
+          } else {
+            jumpToStage(2);
+          }
+        }, 1250);
+      } else {
+        resetStreak();
+        playErrorBuzz();
+        cardBox.classList.remove("animate-shake");
+        void cardBox.offsetWidth;
+        cardBox.classList.add("animate-shake");
+
+        fb.textContent = "❌ נסו שוב! חשבו מי אמר או עשה זאת לפי פסוקים ח'–י\"א.";
+        fb.className = "mt-3 px-4 py-1 rounded-xl text-xs md:text-sm font-extrabold bg-rose-100 text-rose-900 border border-rose-400";
+      }
+    }
+
+    // ================= רינדור שלב 3: בניית גשר הדמיון =================
+    function renderStage2() {
+      const totalRequired = 4;
+      document.getElementById("s2-progress-badge").textContent = `נבנו ${solvedS2Stones.size} / ${totalRequired} אבני גשר`;
+
+      const grid = document.getElementById("s2-stones-grid");
+      grid.innerHTML = "";
+
+      const fb = document.getElementById("s2-feedback");
+
+      shuffledStones.forEach((stone) => {
+        const isBuilt = solvedS2Stones.has(stone.id);
+        const btn = document.createElement("button");
+        btn.type = "button";
+
+        if (isBuilt) {
+          btn.className =
+            "game-btn w-full h-full rounded-2xl p-3 border-2 bg-emerald-100 border-emerald-600 text-emerald-950 flex flex-col items-center justify-center text-center cursor-pointer animate-pop";
+          btn.innerHTML = `
+            <span class="text-2xl mb-1">✅</span>
+            <span class="text-sm md:text-base font-black leading-tight">${stone.title}</span>
+            <span class="text-[11px] md:text-xs font-medium text-emerald-900 mt-1 leading-snug">${stone.desc}</span>
+          `;
+        } else {
+          btn.className =
+            "game-btn w-full h-full rounded-2xl p-3 border-2 bg-white/95 hover:bg-amber-50 border-teal-900/30 text-slate-900 flex flex-col items-center justify-center text-center cursor-pointer";
+          btn.innerHTML = `
+            <span class="text-2xl mb-1">${stone.icon}</span>
+            <span class="text-sm md:text-base font-black text-teal-950 leading-tight">${stone.title}</span>
+            <span class="text-[11px] md:text-xs font-medium text-slate-600 mt-1 leading-snug">${stone.desc}</span>
+          `;
+        }
+
+        btn.onclick = () => {
+          if (isBuilt) return;
+
+          if (stone.isCorrect) {
+            solvedS2Stones.add(stone.id);
+            addScore(25);
+            playSuccessChime();
+            renderStage2();
+            renderAsideVisual();
+
+            fb.textContent = `🌉 מעולה! "${stone.title}" היא אבן יסוד בגשר הדמיון!`;
+            fb.className =
+              "shrink-0 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-emerald-100 text-emerald-900 border border-emerald-500 animate-pop";
+
+            if (solvedS2Stones.size === totalRequired) {
+              setTimeout(() => {
+                document.getElementById("final-score-pill").textContent = `ניקוד סופי: ${score} נקודות ⭐`;
+                document.getElementById("victory-overlay").classList.remove("hidden");
+              }, 850);
+            }
+          } else {
+            resetStreak();
+            playErrorBuzz();
+            btn.classList.remove("animate-shake");
+            void btn.offsetWidth;
+            btn.classList.add("animate-shake", "bg-rose-50", "border-rose-500");
+
+            fb.textContent = "❌ אבן זו אינה נכונה! האחים ויעקב לא שמחו ולא התעלמו – חפשו מה באמת משותף לשאלותיהם.";
+            fb.className =
+              "shrink-0 px-3 py-1 rounded-xl text-xs md:text-sm font-extrabold text-center bg-rose-100 text-rose-900 border border-rose-400";
+          }
+        };
+
+        grid.appendChild(btn);
+      });
+    }
+
+    // ================= רינדור הבמה המאוירת בצד שמאל =================
+    function renderAsideVisual() {
+      const totalTasks = STAGE_0_QUESTIONS.length + STAGE_1_DUEL_CARDS.length + 4; // 14 משימות סה"כ
+      const completedTasks = solvedS0.size + solvedS1.size + solvedS2Stones.size;
+      const pct = Math.round((completedTasks / totalTasks) * 100);
+
+      document.getElementById("aside-prog-text").textContent = `התקדמות במשחק: ${pct}%`;
+      document.getElementById("aside-prog-bar").style.width = `${pct}%`;
+
+      const brothersUnlocked = solvedS0.size >= 1;
+      const fatherUnlocked = solvedS0.size >= 3;
+      const bridgeStones = solvedS2Stones.size;
+
+      const visualBox = document.getElementById("aside-visual-box");
+      visualBox.innerHTML = `
+        <svg viewBox="0 0 220 245" class="w-full h-full max-h-[235px]">
+          <!-- רקע שמיים עדין -->
+          <circle cx="110" cy="115" r="82" fill="#10b981" opacity="0.14" />
+
+          <!-- בועת שאלת האחים (ימין למעלה) -->
+          <g class="${brothersUnlocked ? 'animate-float' : 'opacity-45'}">
+            <rect x="116" y="10" width="96" height="46" rx="12" fill="${brothersUnlocked ? '#fef3c7' : '#334155'}" stroke="#f59e0b" stroke-width="2" />
+            <polygon points="154,56 164,56 158,66" fill="${brothersUnlocked ? '#fef3c7' : '#334155'}" />
+            <text x="164" y="29" text-anchor="middle" fill="${brothersUnlocked ? '#78350f' : '#cbd5e1'}" font-size="10.5" font-weight="900">
+              ${brothersUnlocked ? 'הֲמָלֹךְ תִּמְלֹךְ' : '🔒 שאלת האחים'}
+            </text>
+            <text x="164" y="44" text-anchor="middle" fill="${brothersUnlocked ? '#92400e' : '#94a3b8'}" font-size="10" font-weight="800">
+              ${brothersUnlocked ? 'עָלֵינוּ?!' : 'פסוק ח\''}
+            </text>
+          </g>
+
+          <!-- בועת שאלת האב יעקב (שמאל למעלה) -->
+          <g class="${fatherUnlocked ? 'animate-float' : 'opacity-45'}" style="animation-delay: 0.4s;">
+            <rect x="8" y="10" width="96" height="46" rx="12" fill="${fatherUnlocked ? '#e0f2fe' : '#334155'}" stroke="#38bdf8" stroke-width="2" />
+            <polygon points="56,56 66,56 60,66" fill="${fatherUnlocked ? '#e0f2fe' : '#334155'}" />
+            <text x="56" y="29" text-anchor="middle" fill="${fatherUnlocked ? '#0c4a6e' : '#cbd5e1'}" font-size="10.5" font-weight="900">
+              ${fatherUnlocked ? 'הֲבוֹא נָבוֹא' : '🔒 שאלת האב'}
+            </text>
+            <text x="56" y="44" text-anchor="middle" fill="${fatherUnlocked ? '#0369a1' : '#94a3b8'}" font-size="10" font-weight="800">
+              ${fatherUnlocked ? 'לְהִשְׁתַּחֲוֺת?!' : 'פסוק י\''}
+            </text>
+          </g>
+
+          <!-- גשר הדמיון המחבר בין שאלת האחים לשאלת יעקב -->
+          <g>
+            <!-- קשת הגשר הבסיסית -->
+            <path d="M 48,136 Q 110,84 172,136" fill="none" stroke="#475569" stroke-width="8" stroke-linecap="round" stroke-dasharray="6 4" />
+            <!-- אבן 1 -->
+            <circle cx="62" cy="122" r="9" fill="${bridgeStones >= 1 ? '#fbbf24' : '#334155'}" stroke="#fef08a" stroke-width="1.5" class="${bridgeStones >= 1 ? 'anim-bridge-glow' : ''}" />
+            <!-- אבן 2 -->
+            <circle cx="93" cy="107" r="9" fill="${bridgeStones >= 2 ? '#fbbf24' : '#334155'}" stroke="#fef08a" stroke-width="1.5" class="${bridgeStones >= 2 ? 'anim-bridge-glow' : ''}" />
+            <!-- אבן 3 -->
+            <circle cx="127" cy="107" r="9" fill="${bridgeStones >= 3 ? '#fbbf24' : '#334155'}" stroke="#fef08a" stroke-width="1.5" class="${bridgeStones >= 3 ? 'anim-bridge-glow' : ''}" />
+            <!-- אבן 4 -->
+            <circle cx="158" cy="122" r="9" fill="${bridgeStones >= 4 ? '#fbbf24' : '#334155'}" stroke="#fef08a" stroke-width="1.5" class="${bridgeStones >= 4 ? 'anim-bridge-glow' : ''}" />
+
+            <rect x="64" y="72" width="92" height="18" rx="9" fill="#064e3b" stroke="#34d399" stroke-width="1.2" />
+            <text x="110" y="84.5" text-anchor="middle" fill="#a7f3d0" font-size="10" font-weight="900">
+              גשר הדמיון (${bridgeStones}/4)
+            </text>
+          </g>
+
+          <!-- דמות האחים (צד ימין) -->
+          <g class="anim-talk">
+            <circle cx="174" cy="154" r="12" fill="#fde68a" stroke="#92400e" stroke-width="2" />
+            <rect x="160" y="168" width="28" height="32" rx="7" fill="#d97706" stroke="#78350f" stroke-width="2" />
+            <rect x="148" y="202" width="52" height="18" rx="9" fill="#451a03" stroke="#fbbf24" stroke-width="1.2" />
+            <text x="174" y="214.5" text-anchor="middle" fill="#fde68a" font-size="10.5" font-weight="900">האחים</text>
+          </g>
+
+          <!-- דמות האב יעקב (צד שמאל) -->
+          <g class="anim-talk" style="animation-delay: 0.5s;">
+            <circle cx="46" cy="154" r="12" fill="#fde68a" stroke="#1e3a8a" stroke-width="2" />
+            <!-- זקן לבן ליעקב -->
+            <path d="M37,158 Q46,172 55,158" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2" />
+            <rect x="32" y="168" width="28" height="32" rx="7" fill="#0284c7" stroke="#0c4a6e" stroke-width="2" />
+            <rect x="18" y="202" width="56" height="18" rx="9" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="1.2" />
+            <text x="46" y="214.5" text-anchor="middle" fill="#e0f2fe" font-size="10.5" font-weight="900">האב יעקב</text>
+          </g>
+
+          <!-- דמות יוסף במרכז למטה -->
+          <g>
+            <circle cx="110" cy="166" r="11" fill="#fde68a" stroke="#92400e" stroke-width="2" />
+            <rect x="97" y="179" width="26" height="28" rx="6" fill="#2563eb" stroke="#1e3a8a" stroke-width="1.8" />
+            <line x1="98" y1="186" x2="122" y2="186" stroke="#fbbf24" stroke-width="3" />
+            <line x1="98" y1="194" x2="122" y2="194" stroke="#ef4444" stroke-width="3" />
+            <rect x="86" y="210" width="48" height="18" rx="9" fill="#fef08a" stroke="#92400e" stroke-width="1.5" />
+            <text x="110" y="222.5" text-anchor="middle" fill="#451a03" font-size="10.5" font-weight="900">יוסף</text>
+          </g>
+        </svg>
+      `;
+    }
+
+    // ניווט קדימה ואחורה מהסרגל התחתון
+    function nextStep() {
+      if (currentStage === 0) {
+        if (s0Index < STAGE_0_QUESTIONS.length - 1) {
+          s0Index++;
+          renderStage0();
+        } else {
+          jumpToStage(1);
+        }
+      } else if (currentStage === 1) {
+        if (s1Index < shuffledDuelCards.length - 1) {
+          s1Index++;
+          renderStage1();
+        } else {
+          jumpToStage(2);
+        }
+      } else {
+        jumpToStage(0);
+      }
+    }
+
+    function prevStep() {
+      if (currentStage === 0) {
+        if (s0Index > 0) {
+          s0Index--;
+          renderStage0();
+        }
+      } else if (currentStage === 1) {
+        if (s1Index > 0) {
+          s1Index--;
+          renderStage1();
+        } else {
+          jumpToStage(0);
+          s0Index = STAGE_0_QUESTIONS.length - 1;
+          renderStage0();
+        }
+      } else {
+        jumpToStage(1);
+        s1Index = shuffledDuelCards.length - 1;
+        renderStage1();
+      }
+    }
+
+    // פתיחה וסגירה של מודאלים
+    function toggleVersesModal(show) {
+      const modal = document.getElementById("verses-modal");
+      if (show) {
+        modal.classList.remove("hidden");
+        playTone(500, 0.08, "sine");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function toggleTeacherModal(show) {
+      const modal = document.getElementById("teacher-modal");
+      if (show) {
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    // איפוס מלא של המשחק עם ערבוב אקראי מחדש
+    function restartGame() {
+      score = 0;
+      streak = 0;
+      s0Index = 0;
+      s1Index = 0;
+      solvedS0.clear();
+      solvedS1.clear();
+      solvedS2Stones.clear();
+      document.getElementById("score-display").textContent = "0";
+      document.getElementById("streak-badge").classList.add("hidden");
+      document.getElementById("victory-overlay").classList.add("hidden");
+      prepareRandomizedData();
+      jumpToStage(0);
+    }
+
+    // הפעלה מיידית עם טעינת הדף
+    function initGame() {
+      prepareRandomizedData();
+      jumpToStage(0);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initGame);
+    } else {
+      initGame();
+    }
+  </script>
+</body>
+</html>
